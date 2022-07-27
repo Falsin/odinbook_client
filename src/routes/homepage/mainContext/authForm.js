@@ -33,6 +33,7 @@ function AuthForm({className, children, changeMode}) {
 const StyledAuthForm = styled(AuthForm)`
   display: flex;
   flex-direction: column;
+  width: 50%;
 
   .field {
     display: flex;
