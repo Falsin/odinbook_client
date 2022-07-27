@@ -26,7 +26,7 @@ const StyledMainContext = styled(MainContext)`
   padding: 5vmin;
   position: relative;
 
-  & > * {
+  #about {
     width: 50%;
   }
 `
