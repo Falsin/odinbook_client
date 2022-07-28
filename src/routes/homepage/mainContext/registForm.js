@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import uniqid from "uniqid";
+import CommonContext from "../../../commonContext";
+
 
 function RegistForm({className, children}) {
   let id;
@@ -13,43 +15,59 @@ function RegistForm({className, children}) {
   const [password, setPassword] = useState(null);
   const [confirmPasswordIsValid, setStatusConfirmPassword] = useState(true);
 
-
-
   function checkPassword(e) {
     if (!(password === e.target.value)) {
       setStatusConfirmPassword(false)
     }
   }
 
+  async function submit(e, context) {
+    e.preventDefault();
+    console.log(context)
+
+    let response = await fetch(context.commonInfo.serverLink, {
+      credentials: "include",
+    })
+    response = await response.json();
+
+    console.log(response)
+  }
+
   return (
-    <form className={className}>
-      <div className="field">
-        <label htmlFor={setUniqId()}>First name</label>
-        <input id={id} type="text" />
-      </div>
+    <CommonContext.Consumer>
+      {(context) => {
+        return (
+          <form className={className} onSubmit={(e) => submit(e, context)}>
+            <div className="field">
+              <label htmlFor={setUniqId()}>First name</label>
+              <input id={id} type="text" />
+            </div>
 
-      <div className="field">
-        <label htmlFor={setUniqId()}>Last name</label>
-        <input id={id} type="text" />
-      </div>
+            <div className="field">
+              <label htmlFor={setUniqId()}>Last name</label>
+              <input id={id} type="text" />
+            </div>
 
-      <div className="field">
-        <label htmlFor={setUniqId()}>Login</label>
-        <input id={id} type="text" />
-      </div>
+            <div className="field">
+              <label htmlFor={setUniqId()}>Login</label>
+              <input id={id} type="text" />
+            </div>
 
-      <div className="field">
-        <label htmlFor={setUniqId()}>Password</label>
-        <input id={id} onChange={(e) => setPassword(e.target.value)} type="password" />
-      </div>
+            <div className="field">
+              <label htmlFor={setUniqId()}>Password</label>
+              <input id={id} onChange={(e) => setPassword(e.target.value)} type="password" />
+            </div>
 
-      <div className={confirmPasswordIsValid ? "field" : "field error"}>
-        <label htmlFor={setUniqId()}>Confirm password</label>
-        <input id={id} type="password" onBlur={checkPassword} />
-      </div>
+            <div className={confirmPasswordIsValid ? "field" : "field error"}>
+              <label htmlFor={setUniqId()}>Confirm password</label>
+              <input id={id} type="password" onBlur={checkPassword} />
+            </div>
 
-      <button>Sign up</button>
-    </form>
+            <button>Sign up</button>
+          </form>
+        )
+      }}
+    </CommonContext.Consumer>
   )
 }
 
