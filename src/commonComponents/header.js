@@ -1,11 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+import CommonContext from "../commonContext";
 
 function Header({className, children}) {
   return (
-    <header className={className}>
-      <h1>Odinbook</h1>
-    </header>
+    <CommonContext.Consumer>
+      {(context) => {
+        return (
+          <header className={className}>
+            <h1>Odinbook</h1>
+            <h1>{context.commonInfo.credential.username}</h1>
+          </header>
+        )
+      }
+
+      }
+    </CommonContext.Consumer>
   )
 }
 
