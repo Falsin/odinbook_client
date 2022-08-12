@@ -18,24 +18,13 @@ function MainContext({className, children}) {
               <p>Connect with friends and the world around you on Odinbook.</p>
             </div>
             <StyledAuthForm changeMode={setRegistMode} />
-            {isRegistMode ? <StyledRegistForm /> : null}
+            {isRegistMode ? <StyledRegistForm changeMode={setRegistMode} /> : null}
           </div>
         )
       }
       }
     </CommonContext.Consumer>
   )
-
-/*   return (
-    <div className={className}>
-      <div id="about">
-        <h2>Odinbook</h2>
-        <p>Connect with friends and the world around you on Odinbook.</p>
-      </div>
-      <StyledAuthForm changeMode={setRegistMode} />
-      {isRegistMode ? <StyledRegistForm /> : null}
-    </div>
-  ) */
 }
 
 const StyledMainContext = styled(MainContext)`

@@ -3,9 +3,10 @@ import styled from "styled-components";
 import uniqid from "uniqid";
 import CommonContext from "../../../commonContext";
 
-
-function RegistForm({className, children}) {
+function RegistForm({className, children, changeMode}) {
   let id;
+
+  const [credential, setCredential] = useState({})
 
   function setUniqId() {
     id = uniqid();
@@ -15,22 +16,32 @@ function RegistForm({className, children}) {
   const [password, setPassword] = useState(null);
   const [confirmPasswordIsValid, setStatusConfirmPassword] = useState(true);
 
-  function checkPassword(e) {
-    if (!(password === e.target.value)) {
-      setStatusConfirmPassword(false)
-    }
-  }
-
   async function submit(e, context) {
     e.preventDefault();
-    console.log(context)
+
+    const formData =  new FormData(e.target);
 
     let response = await fetch(context.commonInfo.serverLink, {
       credentials: "include",
+      method: "POST",
+      body: formData
     })
     response = await response.json();
 
-    console.log(response)
+    if (typeof response === "object") {
+      changeMode(false);
+      context.setCommonInfo({
+        ...context.commonInfo, 
+        credential: response
+      })
+    }
+  }
+
+  function changeCredential(e) {
+    setCredential({
+      ...credential,
+      [e.target.name]: e.target.value
+    })
   }
 
   return (
@@ -40,27 +51,37 @@ function RegistForm({className, children}) {
           <form className={className} onSubmit={(e) => submit(e, context)}>
             <div className="field">
               <label htmlFor={setUniqId()}>First name</label>
-              <input id={id} type="text" />
+              <input name="first_name" id={id} type="text" onChange={(e) => changeCredential(e)} />
             </div>
 
             <div className="field">
               <label htmlFor={setUniqId()}>Last name</label>
-              <input id={id} type="text" />
+              <input name="last_name" id={id} type="text" onChange={(e) => changeCredential(e)} />
             </div>
 
             <div className="field">
-              <label htmlFor={setUniqId()}>Login</label>
-              <input id={id} type="text" />
+              <label htmlFor={setUniqId()}>Username</label>
+              <input name="username" id={id} type="text" onChange={(e) => changeCredential(e)} />
             </div>
 
             <div className="field">
               <label htmlFor={setUniqId()}>Password</label>
-              <input id={id} onChange={(e) => setPassword(e.target.value)} type="password" />
+              <input name="password" id={id} type="password" onChange={(e) => changeCredential(e)} />
             </div>
 
             <div className={confirmPasswordIsValid ? "field" : "field error"}>
               <label htmlFor={setUniqId()}>Confirm password</label>
-              <input id={id} type="password" onBlur={checkPassword} />
+              <input name="confirm_password" id={id} type="password" onChange={(e) => changeCredential(e)}  />
+            </div>
+
+            <div className="field">
+              <label htmlFor={setUniqId()}>Birth date</label>
+              <input name="birth_date" id={id} type="date" onChange={(e) => changeCredential(e)} />
+            </div>
+
+            <div className="field">
+              <label htmlFor={setUniqId()}>Photo</label>
+              <input name="photo" id={id} type="file" onChange={(e) => changeCredential(e)} />
             </div>
 
             <button>Sign up</button>
