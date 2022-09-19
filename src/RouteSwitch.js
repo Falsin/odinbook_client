@@ -12,37 +12,39 @@ export default function RouteSwitch () {
   })
 
   useEffect(() => {
-
-    setCredential(commonInfo, setCommonInfo);
+    setCredential();
   }, [])
 
   useEffect(() => {
-    if (commonInfo.credential._id !== JSON.parse(storage.getItem("credential"))._id) {
-      storage.setItem("credential", JSON.stringify(commonInfo.credential))
-    }
+    storage.setItem("credential", JSON.stringify(commonInfo.credential))
   }, [commonInfo])
+
+  async function setCredential() {
+    try {
+      const request = await fetch(commonInfo.serverLink, {
+        credentials: "include",
+      })
+      const response = await request.json();
+  
+      if (commonInfo.credential !== response) { 
+        setCommonInfo({
+          ...commonInfo,
+          credential: response
+        })
+      }
+  
+    } catch {
+      return null;
+    }
+  }
   
   return (
     <CommonContext.Provider value={{commonInfo: commonInfo, setCommonInfo: setCommonInfo}}>
-      <HashRouter>
+    <HashRouter>
         <Routes>
             <Route path="/" element={<Homepage />} />
         </Routes>
       </HashRouter>
     </CommonContext.Provider>
   )
-}
-
-async function setCredential(commonInfo, setCommonInfo) {
-  let request = await fetch(commonInfo.serverLink, {
-    credentials: "include",
-  })
-  request = await request.json();
-
-  if (JSON.parse(storage.getItem("credential"))._id !== request._id) {
-    setCommonInfo({
-      ...commonInfo,
-      credential: request
-    })
-  } 
 }
