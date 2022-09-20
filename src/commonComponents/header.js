@@ -21,18 +21,13 @@ function Header({className, children}) {
         return (
           <header className={className}>
             <h1>Odinbook</h1>
-            {(() => {
-              if (context.commonInfo.credential) {
-                return (
-                  <div>
-                    <h1>{context.commonInfo.credential.username}</h1>
-                    <button onClick={() => {
-                      logOut(context);
-                    }}>Log out</button>
-                  </div>
-                )
-              }
-            })()}
+            {!context.commonInfo.credential 
+            ? null
+            : <div>
+                <h1>{context.commonInfo.credential.username}</h1>
+                <button onClick={() => logOut(context)}>Log out</button>
+              </div>
+            }
           </header>
         )
       }}
