@@ -20,7 +20,7 @@ function AuthForm({className, children, changeMode}) {
   function changeCredentials(e) {
     setCredentials({
       ...credentials,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value.trim()
     })
   }
 
@@ -30,21 +30,11 @@ function AuthForm({className, children, changeMode}) {
     const arrayKeys = Object.keys(inputElementsStatus);
 
     if (arrayKeys.every(item => credentials[item])) {
-      const request =  await fetch(context.commonInfo.serverLink + "login", {
-        credentials: "include",
-        body: JSON.stringify(credentials),
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-
-      const response = await request.json();
+      const response = await request(context);
   
       if (Array.isArray(response)) {
-        response.forEach(item => console.log(item.msg))
-      } else {
         console.log(response)
+      } else {
         context.setCommonInfo({
           ...context.commonInfo,
           credential: response
@@ -52,24 +42,27 @@ function AuthForm({className, children, changeMode}) {
       }
     } else {
       const objecStatus = arrayKeys.reduce((prevVal, currVal) => {
-
-        if (credentials[currVal]) {
-          return {
-            ...prevVal,
-            [currVal]: true,
-          }
-        } else {
-          return {
-            ...prevVal,
-            [currVal]: false,
-          }
+        return {
+          ...prevVal, 
+          [currVal]: credentials[currVal] ? true : false
         }
       }, {})
 
-      console.log(objecStatus)
-
       setInputElementsStatus(objecStatus)
     }
+  }
+
+  async function request(context) {
+    const request =  await fetch(context.commonInfo.serverLink + "login", {
+      credentials: "include",
+      body: JSON.stringify(credentials),
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+
+    return request.json();
   }
 
   return (
@@ -79,15 +72,19 @@ function AuthForm({className, children, changeMode}) {
           <form className={className} onSubmit={e => submit(e, context)}>
             <div className="field">
               <label htmlFor={setUniqId()}>Username</label>
-              <input id={id} type="text" name="username"
-                onChange={changeCredentials} className={inputElementsStatus.username ? "" : "error"}
-              />
+              <div className={inputElementsStatus.username ? "" : "error"}>
+                <input id={id} type="text" name="username"
+                  onChange={changeCredentials}
+                />
+              </div>
             </div>
 
             <div className="field">
               <label htmlFor={setUniqId()}>Password</label>
-              <input id={id} type="password" name="password" 
-              onChange={changeCredentials} className={inputElementsStatus.password ? "" : "error"} />
+              <div className={inputElementsStatus.username ? "" : "error"}>
+                <input id={id} type="password" name="password" 
+                onChange={changeCredentials} />
+              </div>
             </div>
 
             <button>Log in</button>
@@ -116,12 +113,21 @@ const StyledAuthForm = styled(AuthForm)`
       display: inline-block;
     }
 
-    input {
+    div {
       flex-grow: 1;
 
+      &.error::before {
+          content: "Username must not be empty";
+          background: yellow;
+        }
+
+      input {
+      width: 100%;
+
       &.error {
-        background: red;
+        position: relative;
       }
+    }
     }
   }
 
@@ -132,10 +138,6 @@ const StyledAuthForm = styled(AuthForm)`
       margin-top: 3vmin;
     }
   }
-
-/*   button:first-child {
-      margin-top: 3vmin;
-    } */
 `
 
 export default StyledAuthForm;
