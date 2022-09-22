@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import CommonContext from "../../../commonContext";
-import StyledAuthForm from "./authForm";
+import StyledAuthForm from "./authForm/authForm";
 import StyledRegistForm from "./registForm";
 
 
