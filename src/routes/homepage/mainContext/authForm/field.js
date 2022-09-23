@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import uniqid from "uniqid";
 
-
-function Field({name, inputElementsStatus, credentials, setCredentials, className, children}) {
+function Field({name, credentials, setCredentials, className, children}) {
   let id;
+  const [isError, setIsErrorStatus] = useState(false);
+
+  useEffect(() => {
+    setIsErrorStatus(credentials[name] === null ? true : false)
+  })
 
   function setUniqId() {
     id = uniqid();
@@ -18,12 +22,21 @@ function Field({name, inputElementsStatus, credentials, setCredentials, classNam
     })
   }
 
+  function Blur(e) {
+    if (e.target.value === "") {
+      setCredentials({
+        ...credentials,
+        [e.target.name]: null
+      })
+    }
+  }
+
   return (
     <div className={className}>
       <label htmlFor={setUniqId()}>{name}</label>
-        <div className={name + (inputElementsStatus[name] ? "" : " error")}>
+        <div className={isError ? "error" : ""}>
           <input id={id} type={name == "password" ? "password" : "text"} name={name} 
-            onChange={changeCredentials} />
+            onChange={changeCredentials} onBlur={Blur}  />
         </div>
     </div>
   )
@@ -45,7 +58,7 @@ const StyledField = styled(Field)`
     position: relative;
 
     &.error::before {
-      content: "${props => props.name + " must not be empty"}";
+      content: "${({name}) => name + " must not be empty"}";
       position: absolute;
       transform-origin: center bottom;
       transform: translateY(-100%);
