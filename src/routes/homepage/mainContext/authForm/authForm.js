@@ -6,23 +6,20 @@ import StyledField from "./field";
 
 function AuthForm({className, children, changeMode}) {
   const [credentials, setCredentials] = useState({});
-  const [inputElementsStatus, setInputElementsStatus] = useState({
-    username: true,
-    password: true
-  });
-
-  let id;
+  const [inputElementList] = useState(["username", "password"]);
 
   async function submit(e, context) {
     e.preventDefault();
 
-    const arrayKeys = Object.keys(inputElementsStatus);
+    const invalidKeys = inputElementList.filter(item => !credentials[item]);
+    let changedState;
 
-    if (arrayKeys.every(item => credentials[item])) {
+    if (!invalidKeys.length) {
       const response = await request(context);
-  
+
       if (Array.isArray(response)) {
-        console.log(response)
+        const changedReponse = response.map(item => item.param);
+        changedState = changeState(changedReponse);
       } else {
         context.setCommonInfo({
           ...context.commonInfo,
@@ -30,15 +27,19 @@ function AuthForm({className, children, changeMode}) {
         })
       }
     } else {
-      const objecStatus = arrayKeys.reduce((prevVal, currVal) => {
-        return {
-          ...prevVal, 
-          [currVal]: credentials[currVal] ? true : false
-        }
-      }, {})
-
-      setInputElementsStatus(objecStatus)
+      changedState = changeState(invalidKeys);
     }
+
+    setCredentials(changedState);
+  }
+
+  function changeState(arrayElements) {
+    return arrayElements.reduce((prevVal, currVal) => {
+      return {
+        ...prevVal,
+        [currVal]: null
+      }
+    }, {...credentials})
   }
 
   async function request(context) {
@@ -59,14 +60,12 @@ function AuthForm({className, children, changeMode}) {
       {context => {
         return (
           <form className={className} onSubmit={e => submit(e, context)}>
-            {Object.keys(inputElementsStatus).map(item => {
-              return <StyledField key={uniqid()}
-              name={item} 
-              credentials={credentials} 
-              setCredentials={setCredentials}  
-              inputElementsStatus={inputElementsStatus}
-              size={300}
-              />
+            {inputElementList.map((item, id) => {
+              return <StyledField key={id}
+                name={item} 
+                credentials={credentials} 
+                setCredentials={setCredentials}  
+                />
             })}
 
             <button>Log in</button>
