@@ -6,12 +6,12 @@ module.exports = {
   mode: 'development',
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
     clean: true,
   },
   devtool: 'inline-source-map',
   devServer: {
-    static: './dist',
+    static: './build',
     https: true,
   },
   optimization: {

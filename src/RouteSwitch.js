@@ -7,7 +7,7 @@ let storage = window.localStorage;
 
 export default function RouteSwitch () {
   const [commonInfo, setCommonInfo] = useState({
-    serverLink: "http://localhost:3000/",
+    serverLink: "https://mighty-reef-21129.herokuapp.com/",
     credential: JSON.parse(storage.getItem("credential")),
   })
 
