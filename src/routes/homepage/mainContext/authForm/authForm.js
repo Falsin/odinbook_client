@@ -60,7 +60,7 @@ function AuthForm({className, children, changeMode}) {
       credentials: "include",
       headers: {
         'Content-Type': 'application/json',
-        //'Access-Control-Allow-Origin': 'CCCC'
+        'Access-Control-Allow-Origin': 'https://falsin.github.io'
       },
     })
 
