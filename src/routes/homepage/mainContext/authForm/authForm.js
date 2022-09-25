@@ -56,7 +56,7 @@ function AuthForm({className, children, changeMode}) {
   }
 
   async function loginWithFacebook(context) {
-    const request =  await fetch(context.commonInfo.serverLink + "login/facebook", {
+    const request =  await fetch(context.commonInfo.serverLink + "login/facebook/", {
       credentials: "include",
       headers: {
         'Content-Type': 'application/json',
