@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CommonContext from "./commonContext";
 import Homepage from "./routes/homepage/Homepage";
 
@@ -42,11 +42,11 @@ export default function RouteSwitch () {
   
   return (
     <CommonContext.Provider value={{commonInfo: commonInfo, setCommonInfo: setCommonInfo}}>
-    <HashRouter>
+    <BrowserRouter>
         <Routes>
             <Route path="/" element={<Homepage />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </CommonContext.Provider>
   )
 }
