@@ -11,11 +11,18 @@ export default function RouteSwitch () {
     credential: JSON.parse(storage.getItem("credential")),
   })
 
+  if (window.location.hash === "#_=_"){
+    history.replaceState 
+        ? history.replaceState(null, null, window.location.href.split("#")[0])
+        : window.location.hash = "";
+}
+
   useEffect(() => {
     setCredential();
   }, [])
 
-  console.log(commonInfo)
+  console.log(commonInfo);
+
 
   useEffect(() => {
     storage.setItem("credential", JSON.stringify(commonInfo.credential))
@@ -42,7 +49,7 @@ export default function RouteSwitch () {
   
   return (
     <CommonContext.Provider value={{commonInfo: commonInfo, setCommonInfo: setCommonInfo}}>
-    <BrowserRouter>
+      <BrowserRouter>
         <Routes>
             <Route path="/" element={<Homepage />} />
         </Routes>
