@@ -84,8 +84,8 @@ function AuthForm({className, children, changeMode}) {
             <button>Log in</button>
             <button type="button" onClick={() => changeMode(true)}>Create new account</button>
             <button type="button">Test drive an existing account</button>
-            <a href={context.commonInfo.serverLink + "login/facebook"}>Log in with Facebook</a>
-            {/* <button onClick={() => loginWithFacebook(context)}>Log in with Facebook</button> */}
+            {/* <a href={context.commonInfo.serverLink + "login/facebook"}>Log in with Facebook</a> */}
+            <button onClick={() => loginWithFacebook(context)}>Log in with Facebook</button>
           </form>
         )
       }}
