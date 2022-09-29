@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import uniqid from "uniqid";
 import CommonContext from "../../../../commonContext";
 import StyledField from "./field";
 
@@ -55,19 +54,6 @@ function AuthForm({className, children, changeMode}) {
     return request.json();
   }
 
-  async function loginWithFacebook(context) {
-    /* const request =  await fetch(context.commonInfo.serverLink + "login/facebook", {
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://falsin.github.io'
-      },
-    })
-
-    const response = await request.json(); */
-    window.open(context.commonInfo.serverLink + "login/facebook", "_self");
-  }
-
   return (
     <CommonContext.Consumer>
       {context => {
@@ -84,8 +70,7 @@ function AuthForm({className, children, changeMode}) {
             <button>Log in</button>
             <button type="button" onClick={() => changeMode(true)}>Create new account</button>
             <button type="button">Test drive an existing account</button>
-            {/* <a href={context.commonInfo.serverLink + "login/facebook"}>Log in with Facebook</a> */}
-            <button onClick={() => loginWithFacebook(context)}>Log in with Facebook</button>
+            <a href={context.commonInfo.serverLink + "login/facebook"}>Log in with Facebook</a>
           </form>
         )
       }}
