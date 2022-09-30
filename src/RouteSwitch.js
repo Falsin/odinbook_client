@@ -52,8 +52,17 @@ export default function RouteSwitch () {
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Homepage />} />
+            <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </CommonContext.Provider>
+  )
+}
+
+function ErrorPage() {
+  return (
+    <div>
+      This is a error page
+    </div>
   )
 }
