@@ -21,9 +21,6 @@ export default function RouteSwitch () {
     setCredential();
   }, [])
 
-  console.log(commonInfo);
-
-
   useEffect(() => {
     storage.setItem("credential", JSON.stringify(commonInfo.credential))
   }, [commonInfo])
