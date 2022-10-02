@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CommonContext from "../../../../commonContext";
 import StyledField from "./field";
-import uniqid from "uniqid";
 
 function AuthForm({className, children, changeMode}) {
   const defaultState = {
