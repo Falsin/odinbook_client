@@ -13,7 +13,6 @@ function RegistForm({className, children, changeMode}) {
     return id;
   }
 
-  const [password, setPassword] = useState(null);
   const [confirmPasswordIsValid, setStatusConfirmPassword] = useState(true);
 
   async function submit(e, context) {
