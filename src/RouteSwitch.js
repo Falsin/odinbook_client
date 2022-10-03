@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CommonContext from "./commonContext";
 import Homepage from "./routes/homepage/Homepage";
+import SettingsPage from "./routes/settingsPage/SettingsPage"
 
 let storage = window.localStorage;
 
@@ -50,6 +51,7 @@ export default function RouteSwitch () {
         <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/error" element={<ErrorPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </BrowserRouter>
     </CommonContext.Provider>
