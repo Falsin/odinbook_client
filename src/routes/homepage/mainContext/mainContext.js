@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import CommonContext from "../../../commonContext";
 import StyledUnauthorizedUser from "./unauthorizedUser/UnauthorizedUser";
 import StyledAuthorizedUser from "./authorizedUser/AuthorizedUser";
