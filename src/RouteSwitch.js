@@ -4,6 +4,7 @@ import CommonContext from "./commonContext";
 import Homepage from "./routes/homepage/Homepage";
 import SettingsPage from "./routes/settingsPage/SettingsPage"
 import ErrorPage from "./routes/errorPage/ErrorPage";
+import FriendsPage from "./routes/friendsPage/FriendsPage";
 
 let storage = window.localStorage;
 
@@ -53,6 +54,7 @@ export default function RouteSwitch () {
             <Route path="/" element={<Homepage />} />
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/friends" element={<FriendsPage />} />
         </Routes>
       </BrowserRouter>
     </CommonContext.Provider>
