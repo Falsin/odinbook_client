@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CommonContext from "./commonContext";
 import Homepage from "./routes/homepage/Homepage";
 import SettingsPage from "./routes/settingsPage/SettingsPage"
+import ErrorPage from "./routes/errorPage/ErrorPage";
 
 let storage = window.localStorage;
 
@@ -55,13 +56,5 @@ export default function RouteSwitch () {
         </Routes>
       </BrowserRouter>
     </CommonContext.Provider>
-  )
-}
-
-function ErrorPage() {
-  return (
-    <div>
-      This is a error page
-    </div>
   )
 }
