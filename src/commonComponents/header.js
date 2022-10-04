@@ -4,7 +4,7 @@ import CommonContext from "../commonContext";
 
 function Header({className, children}) {
   async function logOut(context) {
-    const request = await fetch(context.commonInfo.serverLink + 'logout', {
+    const request = await fetch(process.env.SERVER_URL + 'logout', {
       method: "POST",
       credentials: "include",
       body: {}
@@ -12,7 +12,6 @@ function Header({className, children}) {
     const response = await request.json();
 
     context.setCommonInfo({
-      ...context.commonInfo,
       credential: response
     })
   }

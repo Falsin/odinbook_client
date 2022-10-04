@@ -18,7 +18,7 @@ function AuthForm({className, children, changeMode}) {
     let changedState;
 
     if (!invalidKeys.length) {
-      const response = await request(context);
+      const response = await request();
 
       if (Array.isArray(response)) {
         const changedReponse = response.map(item => item.param);
@@ -26,7 +26,6 @@ function AuthForm({className, children, changeMode}) {
       } else {
         setCredentials({...defaultState}) 
         return context.setCommonInfo({
-          ...context.commonInfo,
           credential: response
         })
       }
@@ -45,8 +44,8 @@ function AuthForm({className, children, changeMode}) {
     }, credentials)
   }
 
-  async function request(context) {
-    const request =  await fetch(context.commonInfo.serverLink + "login", {
+  async function request() {
+    const request =  await fetch(process.env.SERVER_URL + "login", {
       credentials: "include",
       body: JSON.stringify(credentials),
       method: "POST",
@@ -74,7 +73,7 @@ function AuthForm({className, children, changeMode}) {
             <button>Log in</button>
             <button type="button" onClick={() => changeMode(true)}>Create new account</button>
             <button type="button">Test drive an existing account</button>
-            <a href={context.commonInfo.serverLink + "login/facebook"}>Log in with Facebook</a>
+            <a href={process.env.SERVER_URL + "login/facebook"}>Log in with Facebook</a>
           </form>
         )
       }}

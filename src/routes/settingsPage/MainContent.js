@@ -6,7 +6,7 @@ function MainContent() {
   const navigate = useNavigate();
 
   async function deleteAccount(context) {
-    const request = await fetch(context.commonInfo.serverLink + "account", {
+    const request = await fetch(process.env.SERVER_URL + "account", {
       body: JSON.stringify(context.commonInfo.credential),
       method: "DELETE",
       credentials: "include"
@@ -15,7 +15,6 @@ function MainContent() {
 
     if (response) {
       await context.setCommonInfo({
-        ...context.commonInfo,
         credential: null
       })
       navigate("/")
@@ -25,7 +24,6 @@ function MainContent() {
   return (
     <CommonContext.Consumer>
       {(context) => {
-        console.log(context)
         return (
           <div>
             <div id="account">

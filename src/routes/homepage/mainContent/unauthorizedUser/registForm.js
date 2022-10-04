@@ -18,9 +18,9 @@ function RegistForm({className, children, changeMode}) {
   async function submit(e, context) {
     e.preventDefault();
 
-    const formData =  new FormData(e.target);
+    const formData = new FormData(e.target);
 
-    let response = await fetch(context.commonInfo.serverLink, {
+    let response = await fetch(process.env.SERVER_URL, {
       credentials: "include",
       method: "POST",
       body: formData
@@ -30,7 +30,6 @@ function RegistForm({className, children, changeMode}) {
     if (typeof response === "object") {
       changeMode(false);
       context.setCommonInfo({
-        ...context.commonInfo, 
         credential: response
       })
     }

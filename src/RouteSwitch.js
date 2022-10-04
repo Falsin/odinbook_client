@@ -10,7 +10,6 @@ let storage = window.localStorage;
 
 export default function RouteSwitch () {
   const [commonInfo, setCommonInfo] = useState({
-    serverLink: process.env.SERVER_URL,
     credential: JSON.parse(storage.getItem("credential")),
   })
 
@@ -30,14 +29,13 @@ export default function RouteSwitch () {
 
   async function setCredential() {
     try {
-      const request = await fetch(commonInfo.serverLink, {
+      const request = await fetch(process.env.SERVER_URL, {
         credentials: "include",
       })
       const response = await request.json();
   
       if (commonInfo.credential !== response) { 
         setCommonInfo({
-          ...commonInfo,
           credential: response
         })
       }
