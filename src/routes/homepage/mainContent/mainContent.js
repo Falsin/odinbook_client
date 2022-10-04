@@ -3,7 +3,7 @@ import CommonContext from "../../../commonContext";
 import StyledUnauthorizedUser from "./unauthorizedUser/UnauthorizedUser";
 import StyledAuthorizedUser from "./authorizedUser/AuthorizedUser";
 
-function MainContext({className, children}) {
+function MainContent({className, children}) {
   return (
     <CommonContext.Consumer>
       {(context) => {
@@ -15,4 +15,4 @@ function MainContext({className, children}) {
   )
 }
 
-export default MainContext;
+export default MainContent;

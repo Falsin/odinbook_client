@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import CommonContext from "../../commonContext";
 
-function MainContext() {
+function MainContent() {
   const navigate = useNavigate();
 
   async function deleteAccount(context) {
@@ -40,4 +40,4 @@ function MainContext() {
   )
 }
 
-export default MainContext;
+export default MainContent;

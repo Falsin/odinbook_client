@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import StyledFooter from "../../commonComponents/footer";
+import StyledHeader from "../../commonComponents/header";
+import MainContent from "./mainContent/MainContent";
 
 function FriendsPage () {
+  /* const [isGlobalSearch, setSearchType] = useState[false];
+
   return (
-    <div>
-      This is a friends page!
-    </div>
+    <CommonContext.Consumer>
+      {(context) => {
+        return (
+
+        )
+      }}
+    </CommonContext.Consumer>
+  ) */
+  return (
+    <>
+      <StyledHeader />
+      <MainContent />
+      <StyledFooter />
+    </>
   )
 }
 
