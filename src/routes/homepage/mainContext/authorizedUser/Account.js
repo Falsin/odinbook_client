@@ -10,7 +10,7 @@ function Account({className, children, credential}) {
     <div className={className}>
       <ul>
         <li><img src={'data:' + credential.photo.contentType + ";base64," + base64String}></img> <span>{credential.username}</span></li>
-        <li><a href="/friends">Friends</a></li>
+        <li><Link to="/friends">Friends</Link></li>
         <li><Link to="/settings">Settings</Link></li>
       </ul>
     </div>
