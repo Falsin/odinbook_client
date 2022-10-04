@@ -14,6 +14,10 @@ function MainContext() {
     const response = await request.json();
 
     if (response) {
+      await context.setCommonInfo({
+        ...context.commonInfo,
+        credential: null
+      })
       navigate("/")
     }
   }

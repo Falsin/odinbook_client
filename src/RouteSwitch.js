@@ -16,7 +16,7 @@ export default function RouteSwitch () {
     history.replaceState 
         ? history.replaceState(null, null, window.location.href.split("#")[0])
         : window.location.hash = "";
-}
+  }
 
   useEffect(() => {
     setCredential();
