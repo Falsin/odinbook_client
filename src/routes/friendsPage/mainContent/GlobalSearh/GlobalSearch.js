@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import UserCard from "./UserCard";
+import StyledUserCard from "./UserCard";
+import styled from "styled-components";
 
-function GlobalSearch() {
+function GlobalSearch({className, children}) {
   const [friendsArray, setFriendsArray] = useState(null);
 
   useEffect(() => {
     findPeople(process.env.SERVER_URL)
-    console.log(process.env.SERVER_URL)
   }, [])
 
   async function findPeople() {
@@ -19,12 +19,19 @@ function GlobalSearch() {
   }
 
   return (
-    <div>
+    <div className={className}>
       {!friendsArray ? "No users found" : friendsArray.map((item, id) => {
-        return <UserCard key={id} userObject={item} />
+        return <StyledUserCard key={id} userObject={item} />
       })}
     </div>
   )
 }
 
-export default GlobalSearch;
+const StyledGlobalSearch= styled(GlobalSearch)`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+`
+
+export default StyledGlobalSearch;

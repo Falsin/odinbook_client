@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import CommonContext from "../../../commonContext";
 import LocalSearch from "./LocalSearch";
-import GlobalSearch from "./GlobalSearh/GlobalSearch";
+import StyledGlobalSearch from "./GlobalSearh/GlobalSearch";
 
 function MainContent({className, children}) {
   const [isGlobalSearch, setSearchType] = useState(false);
@@ -17,7 +17,7 @@ function MainContent({className, children}) {
               <button onClick={() => setSearchType(!isGlobalSearch)}>{isGlobalSearch ? "Global search" : "Local search"}</button>
             </div>
           
-            {isGlobalSearch ? <GlobalSearch /> : <LocalSearch context={context} />}
+            {isGlobalSearch ? <StyledGlobalSearch /> : <LocalSearch context={context} />}
           </div>
         )
       }}

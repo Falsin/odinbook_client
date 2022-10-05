@@ -17,7 +17,7 @@ function LocalSearch({context}) {
 
       <div id="outcoming_friends_requests">
         {context.commonInfo.credential.outcoming_friends_requests.map(item => {
-          return <div>A person</div>
+          return <div>{item.first_name} {item.last_name}</div>
         })}
       </div>
     </div>
