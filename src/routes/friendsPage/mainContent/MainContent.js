@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import CommonContext from "../../../commonContext";
 import LocalSearch from "./LocalSearch";
-import GlobalSearch from "./GlobalSearch";
+import GlobalSearch from "./GlobalSearh/GlobalSearch";
 
 function MainContent({className, children}) {
   const [isGlobalSearch, setSearchType] = useState(false);
