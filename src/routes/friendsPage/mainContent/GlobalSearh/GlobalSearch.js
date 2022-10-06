@@ -11,7 +11,6 @@ function GlobalSearch({className, children}) {
 
   async function findPeople() {
     const request = await fetch(process.env.SERVER_URL + "people", {
-      method: "GET",
       credentials: "include"
     });
     const response = await request.json();

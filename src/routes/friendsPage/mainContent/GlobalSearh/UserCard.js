@@ -1,22 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Buffer } from 'buffer';
 import CommonContext from "../../../../commonContext";
 
 function UserCard ({userObject, className, children}) {
-  console.log(userObject)
+  //const [isFriend, setFriendStatus]
 
   async function AddFriend(context) {
     const request = await fetch(process.env.SERVER_URL + "friend", {
       method: "PUT",
-      body: JSON.stringify(userObject),
-      credentials: "include"
+      body: JSON.stringify({_id: userObject._id}),
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      },
     })
     const response = await request.json();
 
-    if (condition) {
+    if (response) {
       context.setCommonInfo({
-        
+        credential: response
       })
     }
   }
