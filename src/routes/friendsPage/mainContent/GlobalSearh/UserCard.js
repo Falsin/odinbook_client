@@ -17,7 +17,7 @@ function UserCard ({userObject, context, className, children}) {
     } 
   }, [])
 
-  async function addFriend(context) {
+  async function addFriend() {
     const request = await fetch(process.env.SERVER_URL + "friend", {
       method: "PUT",
       body: JSON.stringify({_id: userObject._id}),

@@ -6,11 +6,11 @@ function LocalSearch({context}) {
 /*     friendRequests: {
       headline: "Friends",
       nameArray: "friends"
-    },
+    },*/
     incomingRequests: {
       headline: "Incoming friends request",
       nameArray: "incoming_friends_requests"
-    }, */
+    },
     outcomingRequests: {
       headline: "Outcoming friends request",
       nameArray: "outcoming_friends_requests"

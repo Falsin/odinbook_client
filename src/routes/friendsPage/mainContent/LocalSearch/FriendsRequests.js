@@ -12,6 +12,7 @@ function FriendsRequests ({nameArray, headline}) {
   return (
     <CommonContext.Consumer>
       {(context) => {
+        console.log(arrayRequests)
         return (
           <div>
             <h2>{headline}</h2>
