@@ -47,6 +47,13 @@ function UserCard ({userObject, context, className, children}) {
       },
     })
     const response = await request.json();
+
+    if (condition) {
+      await context.setCommonInfo({
+        credential: response
+      })
+      setFriendStatus("friend")
+    }
   }
 
   const base64String = Buffer.from(userObject.photo.bufferObject.data).toString('base64');

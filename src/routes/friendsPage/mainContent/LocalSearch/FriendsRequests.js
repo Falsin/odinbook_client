@@ -13,6 +13,17 @@ function FriendsRequests ({nameArray, headline}) {
     <CommonContext.Consumer>
       {(context) => {
         console.log(arrayRequests)
+        /* return (() => {
+          return !arrayRequests ? null : arrayRequests.map((item, id) => {
+            return (
+              <div>
+                <h2>{headline}</h2>
+                <StyledUserCard key={id} userObject={item} context={context} />
+              </div>
+            )
+          })
+
+        })() */
         return (
           <div>
             <h2>{headline}</h2>
@@ -32,6 +43,8 @@ async function getFriendRequests (nameArray, setArrayRequests) {
   })
 
   const response = await request.json();
+
+  console.log(response)
 
   if (response.length) {
     setArrayRequests(response);
