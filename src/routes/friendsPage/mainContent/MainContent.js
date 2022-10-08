@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import CommonContext from "../../../commonContext";
-import LocalSearch from "./LocalSearch";
+import LocalSearch from "./LocalSearch/LocalSearch";
 import StyledGlobalSearch from "./GlobalSearh/GlobalSearch";
 
 function MainContent({className, children}) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import StyledUserCard from "./UserCard";
 import styled from "styled-components";
+import CommonContext from "../../../../commonContext";
 
 function GlobalSearch({className, children}) {
   const [friendsArray, setFriendsArray] = useState(null);
@@ -18,11 +19,17 @@ function GlobalSearch({className, children}) {
   }
 
   return (
-    <div className={className}>
-      {!friendsArray ? "No users found" : friendsArray.map((item, id) => {
-        return <StyledUserCard key={id} userObject={item} />
-      })}
-    </div>
+    <CommonContext.Consumer>
+      {(context) => {
+        return (
+          <div className={className}>
+            {!friendsArray ? "No users found" : friendsArray.map((item, id) => {
+              return <StyledUserCard key={id} userObject={item} context={context} />
+            })}
+          </div>
+        )
+      }}
+    </CommonContext.Consumer>
   )
 }
 
