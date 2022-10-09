@@ -5,6 +5,8 @@ import { Buffer } from 'buffer';
 function UserCard ({userObject, context, className, children}) {
   const [friendStatus, setFriendStatus] = useState(null);
 
+  //console.log(userObject)
+
   useEffect(() => {
     const currentUser = context.commonInfo.credential;
 
@@ -29,7 +31,6 @@ function UserCard ({userObject, context, className, children}) {
     const response = await request.json();
 
     if (response) {
-      console.log(context)
       await context.setCommonInfo({
         credential: response
       })
@@ -48,11 +49,30 @@ function UserCard ({userObject, context, className, children}) {
     })
     const response = await request.json();
 
-    if (condition) {
+    if (response) {
       await context.setCommonInfo({
         credential: response
       })
       setFriendStatus("friend")
+    }
+  }
+
+  async function deleteFriend() {
+    const request = await fetch(process.env.SERVER_URL + "friend", {
+      method: "DELETE",
+      body: JSON.stringify({_id: userObject._id}),
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    const response = await request.json();
+
+    if (response) {
+      await context.setCommonInfo({
+        credential: response
+      })
+      setFriendStatus("incomingRequests")
     }
   }
 
@@ -70,7 +90,7 @@ function UserCard ({userObject, context, className, children}) {
         } else if (friendStatus === "outcomingRequests") {
           return <button>Friend request sent</button>
         } else if (friendStatus === "friend") {
-          return <button>Delete friend</button>
+          return <button onClick={deleteFriend}>Delete friend</button>
         } else if (friendStatus === "incomingRequests") {
           return <button onClick={acceptRequest}>Accept request</button>
         }
