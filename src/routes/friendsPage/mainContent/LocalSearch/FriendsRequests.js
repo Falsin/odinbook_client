@@ -2,32 +2,21 @@ import React, { useEffect, useState } from "react";
 import CommonContext from "../../../../commonContext";
 import StyledUserCard from "../GlobalSearh/UserCard";
 
-function FriendsRequests ({nameArray, headline}) {
-  const [arrayRequests, setArrayRequests] = useState(null);
-
-  useEffect(() => {
-    getFriendRequests(nameArray, setArrayRequests)
-  }, [])
+function FriendsRequests ({request}) {
+  const [arrayRequests, setArrayRequests] = useState([]);
   
   return (
     <CommonContext.Consumer>
       {(context) => {
-        console.log(arrayRequests)
-        /* return (() => {
-          return !arrayRequests ? null : arrayRequests.map((item, id) => {
-            return (
-              <div>
-                <h2>{headline}</h2>
-                <StyledUserCard key={id} userObject={item} context={context} />
-              </div>
-            )
-          })
 
-        })() */
+        if (context.commonInfo.credential[request.nameArray].length !== arrayRequests.length) {
+          getFriendRequests(request.nameArray, setArrayRequests)
+        }
+
         return (
           <div>
-            <h2>{headline}</h2>
-            {!arrayRequests ? null : arrayRequests.map((item, id) => {
+            <h2>{request.headline}</h2>
+            {!arrayRequests.length ? null : arrayRequests.map((item, id) => {
               return <StyledUserCard key={id} userObject={item} context={context} />
             })}
           </div>
@@ -43,8 +32,6 @@ async function getFriendRequests (nameArray, setArrayRequests) {
   })
 
   const response = await request.json();
-
-  console.log(response)
 
   if (response.length) {
     setArrayRequests(response);
