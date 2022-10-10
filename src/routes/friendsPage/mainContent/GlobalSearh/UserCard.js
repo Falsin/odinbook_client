@@ -23,18 +23,22 @@ function UserCard ({userObject, context, className, children}) {
 
   async function addFriend() {
     await sendRequest("friend", "PUT");
+    setFriendStatus("outcomingRequests")
   }
 
   async function acceptRequest() {
     await sendRequest("incoming_friends_requests", "PUT");
+    setFriendStatus("friend")
   }
 
   async function deleteFriend() {
     await sendRequest("friend", "DELETE");
+    setFriendStatus("incomingRequests")
   }
 
   async function cancelRequest() {
     await sendRequest("outcoming_friends_requests", "DELETE");
+    setFriendStatus(null)
   }
 
   async function sendRequest(routeName, method) {
@@ -48,17 +52,18 @@ function UserCard ({userObject, context, className, children}) {
     })
     const response = await request.json();
 
+    console.log(response)
+
     if (response) {
       await context.setCommonInfo({
         credential: response
       })
-      setFriendStatus(null)
     }
   }
 
   const base64String = Buffer.from(userObject.photo.bufferObject.data).toString('base64');
   return (
-    <div className={className}>
+    <li className={className}>
       <div>
         <img src={'data:' + userObject.photo.contentType + ";base64," + base64String}></img>
         <p>{userObject.first_name} {userObject.last_name}</p>
@@ -78,7 +83,7 @@ function UserCard ({userObject, context, className, children}) {
           return <button onClick={acceptRequest}>Accept request</button>
         }
       })()}
-    </div>
+    </li>
   )
 }
 
