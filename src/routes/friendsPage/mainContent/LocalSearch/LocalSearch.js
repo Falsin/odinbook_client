@@ -16,20 +16,6 @@ function LocalSearch({context}) {
       nameArray: "outcoming_friends_requests"
     }
   }
-  /* const [requestTypes, setRequestTypes] = useState({
-    friendRequests: {
-      headline: "Friends",
-      nameArray: "friends"
-    },
-    incomingRequests: {
-      headline: "Incoming friends request",
-      nameArray: "incoming_friends_requests"
-    },
-    outcomingRequests: {
-      headline: "Outcoming friends request",
-      nameArray: "outcoming_friends_requests"
-    }
-  }) */
 
   return (
     <div id="localSearch">
