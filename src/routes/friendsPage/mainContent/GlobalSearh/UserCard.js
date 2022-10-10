@@ -5,12 +5,6 @@ import { Buffer } from 'buffer';
 function UserCard ({userObject, context, className, children}) {
   const [friendStatus, setFriendStatus] = useState(null);
 
-  //console.log(userObject)
-
-  /* useEffect(() => {
-    changeFriendStatus()
-  }) */
-
   useEffect(() => {
     changeFriendStatus()
   }, [userObject._id])
@@ -28,65 +22,24 @@ function UserCard ({userObject, context, className, children}) {
   }
 
   async function addFriend() {
-    const request = await fetch(process.env.SERVER_URL + "friend", {
-      method: "PUT",
-      body: JSON.stringify({_id: userObject._id}),
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    const response = await request.json();
-
-    if (response) {
-      await context.setCommonInfo({
-        credential: response
-      })
-      setFriendStatus("outcomingRequests")
-    }
+    await sendRequest("friend", "PUT");
   }
 
   async function acceptRequest() {
-    const request = await fetch(process.env.SERVER_URL + "incoming_friends_requests", {
-      method: "PUT",
-      body: JSON.stringify({_id: userObject._id}),
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    const response = await request.json();
-
-    if (response) {
-      await context.setCommonInfo({
-        credential: response
-      })
-      setFriendStatus("friend")
-    }
+    await sendRequest("incoming_friends_requests", "PUT");
   }
 
   async function deleteFriend() {
-    const request = await fetch(process.env.SERVER_URL + "friend", {
-      method: "DELETE",
-      body: JSON.stringify({_id: userObject._id}),
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    const response = await request.json();
-
-    if (response) {
-      await context.setCommonInfo({
-        credential: response
-      })
-      setFriendStatus("incomingRequests")
-    }
+    await sendRequest("friend", "DELETE");
   }
 
-  async function cancelRequest(params) {
-    const request = await fetch(process.env.SERVER_URL + "outcoming_friends_requests", {
-      method: "DELETE",
+  async function cancelRequest() {
+    await sendRequest("outcoming_friends_requests", "DELETE");
+  }
+
+  async function sendRequest(routeName, method) {
+    const request = await fetch(process.env.SERVER_URL + routeName, {
+      method: method,
       body: JSON.stringify({_id: userObject._id}),
       credentials: "include",
       headers: {
