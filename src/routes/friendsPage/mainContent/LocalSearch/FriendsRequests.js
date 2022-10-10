@@ -9,6 +9,8 @@ function FriendsRequests ({request}) {
     <CommonContext.Consumer>
       {(context) => {
 
+        console.log(context.commonInfo.credential)
+
         if (context.commonInfo.credential[request.nameArray].length !== arrayRequests.length) {
           getFriendRequests(request.nameArray, setArrayRequests)
         }

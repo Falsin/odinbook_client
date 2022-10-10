@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FriendsRequests from "./FriendsRequests";
 
 function LocalSearch({context}) {
-  const RequestTypes = {
+  const requestTypes = {
     friendRequests: {
       headline: "Friends",
       nameArray: "friends"
@@ -16,20 +16,29 @@ function LocalSearch({context}) {
       nameArray: "outcoming_friends_requests"
     }
   }
+  /* const [requestTypes, setRequestTypes] = useState({
+    friendRequests: {
+      headline: "Friends",
+      nameArray: "friends"
+    },
+    incomingRequests: {
+      headline: "Incoming friends request",
+      nameArray: "incoming_friends_requests"
+    },
+    outcomingRequests: {
+      headline: "Outcoming friends request",
+      nameArray: "outcoming_friends_requests"
+    }
+  }) */
 
   return (
     <div id="localSearch">
-      {Object.entries(RequestTypes).map(([key, value], id) => {
+      {Object.entries(requestTypes).map(([key, value], id) => {
         return !context.commonInfo.credential[value.nameArray].length 
             ? null 
-            : <FriendsRequests key={id} headline={value.headline} nameArray={value.nameArray} />
-      })}
+            : <FriendsRequests key={id} request={value} />
+          })}
     </div>
-    /* <div id="localSearch">
-      {Object.entries(RequestTypes).map(([key, value], id) => {
-        return <FriendsRequests key={id} headline={value.headline} nameArray={value.nameArray} />
-      })}
-    </div> */
   )
 }
 

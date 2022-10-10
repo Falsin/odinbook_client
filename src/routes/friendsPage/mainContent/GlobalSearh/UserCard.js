@@ -7,9 +7,17 @@ function UserCard ({userObject, context, className, children}) {
 
   //console.log(userObject)
 
-  useEffect(() => {
-    const currentUser = context.commonInfo.credential;
+  /* useEffect(() => {
+    changeFriendStatus()
+  }) */
 
+  useEffect(() => {
+    changeFriendStatus()
+  }, [userObject._id])
+
+  function changeFriendStatus() {
+    const currentUser = context.commonInfo.credential;
+    
     if (currentUser.outcoming_friends_requests.includes(userObject._id)) {
       setFriendStatus("outcomingRequests");
     } else if (currentUser.friends.includes(userObject._id)) {
@@ -17,7 +25,7 @@ function UserCard ({userObject, context, className, children}) {
     } else if (currentUser.incoming_friends_requests.includes(userObject._id)) {
       setFriendStatus("incomingRequests");
     } 
-  }, [])
+  }
 
   async function addFriend() {
     const request = await fetch(process.env.SERVER_URL + "friend", {
@@ -76,6 +84,25 @@ function UserCard ({userObject, context, className, children}) {
     }
   }
 
+  async function cancelRequest(params) {
+    const request = await fetch(process.env.SERVER_URL + "outcoming_friends_requests", {
+      method: "DELETE",
+      body: JSON.stringify({_id: userObject._id}),
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    const response = await request.json();
+
+    if (response) {
+      await context.setCommonInfo({
+        credential: response
+      })
+      setFriendStatus(null)
+    }
+  }
+
   const base64String = Buffer.from(userObject.photo.bufferObject.data).toString('base64');
   return (
     <div className={className}>
@@ -88,7 +115,10 @@ function UserCard ({userObject, context, className, children}) {
         if (!friendStatus) {
           return <button onClick={addFriend}>Add friend</button>
         } else if (friendStatus === "outcomingRequests") {
-          return <button>Friend request sent</button>
+          return <div>
+            <p>Friend request sent</p>
+            <button onClick={cancelRequest}>Cancel request</button>
+          </div>
         } else if (friendStatus === "friend") {
           return <button onClick={deleteFriend}>Delete friend</button>
         } else if (friendStatus === "incomingRequests") {
