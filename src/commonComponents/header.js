@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import CommonContext from "../commonContext";
+import { Link } from "react-router-dom";
 
 function Header({className, children}) {
   async function logOut(context) {
@@ -21,7 +22,7 @@ function Header({className, children}) {
       {(context) => {
         return (
           <header className={className}>
-            <h1>Odinbook</h1>
+            <h1><Link to="/">Odinbook</Link></h1>
             {!context.commonInfo.credential 
             ? null
             : <div>
@@ -42,6 +43,13 @@ const StyledHeader = styled(Header)`
   padding: 2vmin 5vmin 2vmin 5vmin;
   display: flex;
   justify-content: space-between;
+
+  & > h1 {
+    a {
+      text-decoration: none ;
+      color: white;
+    }
+  }
 
   & div {
     display: flex;
