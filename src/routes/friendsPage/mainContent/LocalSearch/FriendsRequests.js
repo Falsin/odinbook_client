@@ -16,12 +16,14 @@ function FriendsRequests ({request}) {
         }
 
         return (
-          <div>
-            <h2>{request.headline}</h2>
-            {!arrayRequests.length ? null : arrayRequests.map((item, id) => {
-              return <StyledUserCard key={id} userObject={item} context={context} />
-            })}
-          </div>
+          <li>
+            <ul>
+              <h2>{request.headline}</h2>
+              {!arrayRequests.length ? null : arrayRequests.map((item, id) => {
+                return <StyledUserCard key={id} userObject={item} context={context} />
+              })}
+            </ul>
+          </li>
         )
       }}
     </CommonContext.Consumer>

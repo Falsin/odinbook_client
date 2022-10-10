@@ -19,11 +19,13 @@ function LocalSearch({context}) {
 
   return (
     <div id="localSearch">
-      {Object.entries(requestTypes).map(([key, value], id) => {
-        return !context.commonInfo.credential[value.nameArray].length 
-            ? null 
-            : <FriendsRequests key={id} request={value} />
-          })}
+      <ul>
+        {Object.entries(requestTypes).map(([key, value], id) => {
+          return !context.commonInfo.credential[value.nameArray].length 
+              ? null 
+              : <FriendsRequests key={id} request={value} />
+        })}
+      </ul>
     </div>
   )
 }
