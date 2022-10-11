@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import styled from "styled-components";
 import CommonContext from "../../../../commonContext";
 import StyledUserCard from "../GlobalSearh/UserCard";
 
-function FriendsRequests ({request}) {
+function FriendsRequests ({request, className, children}) {
   const [arrayRequests, setArrayRequests] = useState([]);
   
   return (
     <CommonContext.Consumer>
       {(context) => {
 
-        console.log(context.commonInfo.credential)
-
         if (context.commonInfo.credential[request.nameArray].length !== arrayRequests.length) {
           getFriendRequests(request.nameArray, setArrayRequests)
         }
 
         return (
-          <li>
+          <li className={className}>
             <ul>
               <h2>{request.headline}</h2>
               {!arrayRequests.length ? null : arrayRequests.map((item, id) => {
@@ -30,6 +29,12 @@ function FriendsRequests ({request}) {
   )
 }
 
+const StyledFriendsRequests = styled(FriendsRequests)`
+  ul {
+    list-style: none;
+  }
+`
+
 async function getFriendRequests (nameArray, setArrayRequests) {
   const request = await fetch(process.env.SERVER_URL + nameArray, {
     credentials: "include"
@@ -42,4 +47,4 @@ async function getFriendRequests (nameArray, setArrayRequests) {
   }
 }
 
-export default FriendsRequests;
+export default StyledFriendsRequests;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CommonContext from "../../../../commonContext";
 
 import StyledAccount from "./Account";
+import StyledLocalSearch from "../../../friendsPage/mainContent/LocalSearch/LocalSearch";
 
 function AuthorizedUser({className, children}) {
   return (
@@ -21,34 +22,7 @@ function AuthorizedUser({className, children}) {
             </div>
 
             <div id="friends">
-              <ul>
-                <li>
-                  <h2>Incoming friends requests</h2>
-                  <ul>
-                    <li>1 Friend</li>
-                    <li>2 Friend</li>
-                    <li>3 Friend</li>
-                  </ul>
-                </li>
-
-                <li>
-                  <h2>Outcoming friends requests</h2>
-                  <ul>
-                    <li>1 Friend</li>
-                    <li>2 Friend</li>
-                    <li>3 Friend</li>
-                  </ul>
-                </li>
-
-                <li>
-                  <h2>Friends</h2>
-                  <ul>
-                    <li>1 Friend</li>
-                    <li>2 Friend</li>
-                    <li>3 Friend</li>
-                  </ul>
-                </li>
-              </ul>
+              <StyledLocalSearch context={context} />
             </div>
           </div>
         )

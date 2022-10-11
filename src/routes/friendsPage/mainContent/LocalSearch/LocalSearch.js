@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import FriendsRequests from "./FriendsRequests";
+import React from "react";
+import styled from "styled-components";
+import StyledFriendsRequests from "./FriendsRequests";
 
-function LocalSearch({context}) {
+function LocalSearch({context, className, children}) {
   const requestTypes = {
     friendRequests: {
       headline: "Friends",
@@ -18,16 +19,18 @@ function LocalSearch({context}) {
   }
 
   return (
-    <div id="localSearch">
-      <ul>
-        {Object.entries(requestTypes).map(([key, value], id) => {
-          return !context.commonInfo.credential[value.nameArray].length 
-              ? null 
-              : <FriendsRequests key={id} request={value} />
-        })}
-      </ul>
-    </div>
+    <ul className={className}>
+      {Object.entries(requestTypes).map(([key, value], id) => {
+        return !context.commonInfo.credential[value.nameArray].length 
+            ? null 
+            : <StyledFriendsRequests key={id} request={value} />
+      })}
+    </ul>
   )
 }
 
-export default LocalSearch;
+const StyledLocalSearch = styled(LocalSearch)`
+  list-style: none;
+`
+
+export default StyledLocalSearch;

@@ -52,8 +52,6 @@ function UserCard ({userObject, context, className, children}) {
     })
     const response = await request.json();
 
-    console.log(response)
-
     if (response) {
       await context.setCommonInfo({
         credential: response
@@ -91,9 +89,10 @@ const StyledUserCard = styled(UserCard)`
   padding: 2vmin;
   min-width: 200px;
 
-  div {
+  div:first-of-type {
     display: flex;
     align-items: center;
+    margin-bottom: 2vmin;
 
     img {
       width: 50px;
@@ -107,6 +106,8 @@ const StyledUserCard = styled(UserCard)`
   }
 
   button {
+    padding: 1vmin 1.5vmin 1vmin 1.5vmin;
+    margin-top: 2vmin;
     display: block;
   }
 `
