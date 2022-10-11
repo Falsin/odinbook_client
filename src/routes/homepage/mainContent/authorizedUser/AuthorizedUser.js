@@ -14,7 +14,7 @@ function AuthorizedUser({className, children}) {
           <div id="authorizedUser" className={className}>
             <StyledAccount credential={context.commonInfo.credential} />
 
-            <StyledNewsBoard />
+            <StyledNewsBoard context={context} />
 
             <div id="friends">
               <StyledLocalSearch context={context} />

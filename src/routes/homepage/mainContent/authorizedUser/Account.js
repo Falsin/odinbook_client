@@ -19,6 +19,7 @@ function Account({className, children, credential}) {
 
 const StyledAccount = styled(Account)`
   width: 25%;
+
   img {
     width: 50px;
     height: 50px;
