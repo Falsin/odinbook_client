@@ -4,6 +4,7 @@ import CommonContext from "../../../../commonContext";
 
 import StyledAccount from "./Account";
 import StyledLocalSearch from "../../../friendsPage/mainContent/LocalSearch/LocalSearch";
+import StyledNewsBoard from "./NewsBoard";
 
 function AuthorizedUser({className, children}) {
   return (
@@ -13,13 +14,7 @@ function AuthorizedUser({className, children}) {
           <div id="authorizedUser" className={className}>
             <StyledAccount credential={context.commonInfo.credential} />
 
-            <div id="news">
-              <ul>
-                <li>News 1</li>
-                <li>News 2</li>
-                <li>News 3</li>
-              </ul>
-            </div>
+            <StyledNewsBoard />
 
             <div id="friends">
               <StyledLocalSearch context={context} />
@@ -38,16 +33,9 @@ const StyledAuthorizedUser = styled(AuthorizedUser)`
   padding: 5vmin;
   position: relative;
 
-  #news {
-      width: 50%;
-    }
-    #account {
-      width: 25%;
-    }
-
-    ul {
-      list-style-type: none;
-    }
+  ul {
+    list-style-type: none;
+  }
 `
 
 export default StyledAuthorizedUser;
