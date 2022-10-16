@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Post from "./PostCard";
 
 function NewsBoard({className, children, context}) {
+  const [newsArray, setNewsArray] = useState([]);
+
   async function submit(e) {
     e.preventDefault();
 
@@ -20,6 +23,24 @@ function NewsBoard({className, children, context}) {
     }
   }
 
+  useEffect(() => {
+    console.log("смонтировался")
+    setNews()
+  }, [])
+
+  async function setNews() {
+    const request = await fetch(process.env.SERVER_URL + 'posts', {
+      credentials: "include",
+    })
+
+    const response = await request.json();
+
+    if (response.length) {
+      console.log(response)
+      setNewsArray(response);
+    }
+  }
+
   return (
     <div className={className}>
       <form onSubmit={(e) => submit(e)}>
@@ -29,9 +50,7 @@ function NewsBoard({className, children, context}) {
       </form>
 
       <ul>
-        <li>News 1</li>
-        <li>News 2</li>
-        <li>News 3</li>
+        {newsArray.map((item, id) => <Post key={id} post={item} />)}
       </ul>
     </div>
   )

@@ -4,7 +4,7 @@ import CommonContext from "../../../../commonContext";
 
 import StyledAccount from "./Account";
 import StyledLocalSearch from "../../../friendsPage/mainContent/LocalSearch/LocalSearch";
-import StyledNewsBoard from "./NewsBoard";
+import StyledNewsBoard from "./newsBoard/NewsBoard";
 
 function AuthorizedUser({className, children}) {
   return (
