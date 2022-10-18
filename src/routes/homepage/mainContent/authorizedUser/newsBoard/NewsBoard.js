@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Post from "./PostCard";
+import StyledPost from "./postCard/PostCard";
 
 function NewsBoard({className, children, context}) {
   const [newsArray, setNewsArray] = useState([]);
@@ -9,6 +9,7 @@ function NewsBoard({className, children, context}) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
+    e.target[0].value = "";
 
     const request = await fetch(process.env.SERVER_URL + 'post', {
       credentials: "include",
@@ -19,7 +20,9 @@ function NewsBoard({className, children, context}) {
     const response = await request.json();
 
     if (response) {
-      console.log(response);
+      setNews(response);
+    } else {
+      console.log('Invalid data')
     }
   }
 
@@ -36,21 +39,23 @@ function NewsBoard({className, children, context}) {
     const response = await request.json();
 
     if (response.length) {
-      console.log(response)
+      console.log('this is work')
       setNewsArray(response);
     }
   }
 
+  console.log(newsArray)
+
   return (
     <div className={className}>
       <form onSubmit={(e) => submit(e)}>
-        <input name="text" placeholder={"What's on your mind, " + context.commonInfo.credential.first_name + "?"} />
+        <textarea name="text" placeholder={"What's on your mind, " + context.commonInfo.credential.first_name + "?"} />
         <input name="photo" type="file" />
         <button>Send</button>
       </form>
 
       <ul>
-        {newsArray.map((item, id) => <Post key={id} post={item} />)}
+        {newsArray.map((item, id) => <StyledPost key={id} post={item} />)}
       </ul>
     </div>
   )
@@ -60,9 +65,10 @@ const StyledNewsBoard = styled(NewsBoard)`
   width: 50%;
   padding: 0 2vmin;
 
-  input:first-of-type {
+  textarea {
     padding: 1vmin 1.5vmin 1vmin 1.5vmin;
     width: 100%;
+    resize: none;
   }
 `
 
