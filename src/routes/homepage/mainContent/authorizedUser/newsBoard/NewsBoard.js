@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import StyledPost from "./postCard/PostCard";
+import uniqid from "uniqid";
 
 function NewsBoard({className, children, context}) {
   const [newsArray, setNewsArray] = useState([]);
@@ -27,7 +28,6 @@ function NewsBoard({className, children, context}) {
   }
 
   useEffect(() => {
-    console.log("смонтировался")
     setNews()
   }, [])
 
@@ -44,8 +44,6 @@ function NewsBoard({className, children, context}) {
     }
   }
 
-  console.log(newsArray)
-
   return (
     <div className={className}>
       <form onSubmit={(e) => submit(e)}>
@@ -55,7 +53,9 @@ function NewsBoard({className, children, context}) {
       </form>
 
       <ul>
-        {newsArray.map((item, id) => <StyledPost key={id} post={item} />)}
+        {newsArray.map((item, id) => {
+          return <StyledPost settingFunction={setNewsArray} key={id} post={item} />
+        })}
       </ul>
     </div>
   )
