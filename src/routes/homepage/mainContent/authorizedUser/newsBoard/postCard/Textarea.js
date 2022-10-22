@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from "react";
-import uniqid from "uniqid";
+import styled from "styled-components";
 
-function Textarea({post}) {
+function Textarea({post, mode, className, children}) {
   const [height, setHeight] = useState(null);
-  const [classTextarea] = useState(uniqid());
-
-/*   useEffect(() => {
-    setHeight(null);
-
-    //window.addEventListener('resize', () => setHeight(null));
-    //window.onresize = () => setHeight(null);
-  }, [post._id])
-
-  
-  useEffect(() => {
-    const textarea = document.querySelector(`.${classTextarea}`);
-  
-    console.log(post.content.text);
-    console.log(height);
-    console.log(textarea.scrollHeight)
-
-  
-    if (!height) {
-      setHeight(textarea.scrollHeight + "px");
-    }
-  }) */
+  const [value, setValue] = useState(post.content.text);
   
   useEffect(() => {
     window.addEventListener('resize', () => setHeight(null));
-    //console.log('смонтировался')
   }, [])
 
   useEffect(() => {
@@ -36,16 +14,35 @@ function Textarea({post}) {
   }, [post._id])
   
   useEffect(() => {
-    const textarea = document.querySelector(`.${classTextarea}`);
+    const textarea = document.getElementsByClassName(`${className}`);
   
     if (!height) {
       setHeight(textarea.scrollHeight + "px");
     }
+
+    if (value !== post.content.text && !mode) {
+      setValue(post.content.text)
+    }
   })
 
+  function changeValue(e) {
+    setValue(e.target.value);
+    
+  }
+
   return (
-    <textarea value={post.content.text} readOnly className={classTextarea} style={{height: height}} />
+    <textarea name="text" className={className} value={value} onChange={(e) => changeValue(e)} readOnly={mode ? false : true} style={{height: height}} />
   )
 }
 
-export default Textarea;
+const StyledTextarea = styled(Textarea)`
+    background: none;
+    color: white;
+    border: none;
+    outline: none;
+    display: inline-block;
+    overflow: hidden;
+    box-sizing: border-box;
+`
+
+export default StyledTextarea;

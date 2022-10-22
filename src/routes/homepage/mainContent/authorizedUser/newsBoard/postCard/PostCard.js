@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Buffer } from 'buffer';
-import Textarea from "./Textarea";
+import StyledTextarea from "./Textarea";
 
-const Post = React.memo(({post, className, children, settingFunction}) => {
+const Post = ({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
-
-  useEffect(() => {
-    console.log('смонтировался')
-  }, [])
-
-  console.log(post)
 
   async function deletePost(e) {
     e.preventDefault();
@@ -31,79 +25,103 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
     }
   }
 
-  const base64String = post.content.photo ? Buffer.from(post.content.photo.bufferObject.data).toString('base64') : null;
-
-  return (
-    <li className={className + (isEditMode ? "editMode" : " ")} >
-      <form>
-        <label>{post.author.username}</label>
-        <label>{post.date}</label>
-        {!post.content.text ? null : <Textarea post={post} />}
-        {!post.content.photo ? null : <img src={'data:' + post.content.photo.contentType + ";base64," + base64String}></img>}
-        <button>Edit post</button>
-        <button onClick={deletePost}>Delete post</button>
-      </form>
-    </li>
-  )
-}, (prevProps, nextProps) => {
-  return prevProps.post._id === nextProps.post._id;
-})
-
-/* function Post({post, className, children, settingFunction}) {
-  const [isEditMode, setMode] = useState(false);
-
-  useEffect(() => {
-    console.log('смонтировался')
-  }, [])
-
-  console.log('update')
-
-  async function deletePost(e) {
+  async function changeMode(e) {
     e.preventDefault();
+
+    setMode(!isEditMode);
+  }
+
+  async function submit(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    formData.append("id", post._id);
+
+    if (post.content.photo) {
+      formData.append("photo", JSON.stringify(post.content.photo));
+    }
 
     const request = await fetch(process.env.SERVER_URL + "post", {
       credentials: "include",
-      method: "DELETE",
-      body: JSON.stringify({_id: post._id}),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      method: "PUT",
+      body: formData,
     })
 
     const response = await request.json();
 
     if (response) {
       settingFunction(response);
+      setMode(!isEditMode);
     }
   }
 
   const base64String = post.content.photo ? Buffer.from(post.content.photo.bufferObject.data).toString('base64') : null;
 
   return (
-    <li className={className + (isEditMode ? "editMode" : " ")} >
-      <form>
+    <li className={className + (isEditMode ? " editMode" : "")} >
+      <form onSubmit={submit}>
         <label>{post.author.username}</label>
         <label>{post.date}</label>
-        {!post.content.text ? null : <Textarea post={post} />}
-        {!post.content.photo ? null : <img src={'data:' + post.content.photo.contentType + ";base64," + base64String}></img>}
-        <button>Edit post</button>
-        <button onClick={deletePost}>Delete post</button>
+        {!post.content.text ? null : <StyledTextarea post={post} mode={isEditMode} />}
+        <PhotoComponent post={post} mode={isEditMode} />
+        {!isEditMode ? <button onClick={changeMode}>Edit post</button> : <button>Save</button>}
+        {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
       </form>
     </li>
   )
-} */
+}
+
+function PhotoComponent({post, mode, setPostPhoto}) {
+  const [photo, setPhoto] = useState(post.content.photo);
+
+  function deletePhoto(e) {
+    e.preventDefault()
+    post.content.photo = null;
+    console.log(post.content.photo)
+    setPhoto(post.content.photo);
+  }
+
+  const base64String = post.content.photo ? Buffer.from(post.content.photo.bufferObject.data).toString('base64') : null;
+  
+  return (
+    <>
+      {(() => {
+        if (mode) {
+          if (!photo) {
+            return <input name="photo" type="file" />
+          } else {
+            return (
+              <div>
+                {mode ? <button onClick={deletePhoto}>Delete photo</button> : null}
+                <img src={'data:' + post.content.photo.contentType + ";base64," + base64String}/>
+              </div>
+            )
+          }
+        } else {
+          if (photo) {
+            return (
+              <div>
+                <img src={'data:' + photo.contentType + ";base64," + base64String}/>
+              </div>
+            )
+          } else {
+            return null;
+          }
+        }
+      })()}
+    </>
+  )
+}
 
 const StyledPost = styled(Post)`
   margin-top: 2vmin;
 
-  textarea {
-    background: none;
-    color: white;
-    border: none;
-    outline: none;
-    display: inline-block;
-    overflow: hidden;
-    box-sizing: border-box;
+  img {
+    max-height: 200px;
+    max-width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 `
 

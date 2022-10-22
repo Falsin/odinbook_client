@@ -6,13 +6,17 @@ import uniqid from "uniqid";
 function NewsBoard({className, children, context}) {
   const [newsArray, setNewsArray] = useState([]);
 
+  console.log(newsArray)
+
   async function submit(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     e.target[0].value = "";
 
-    const request = await fetch(process.env.SERVER_URL + 'post', {
+    console.log(formData.get("photo"))
+
+  const request = await fetch(process.env.SERVER_URL + 'post', {
       credentials: "include",
       method: "POST",
       body: formData
@@ -39,7 +43,6 @@ function NewsBoard({className, children, context}) {
     const response = await request.json();
 
     if (response.length) {
-      console.log('this is work')
       setNewsArray(response);
     }
   }
