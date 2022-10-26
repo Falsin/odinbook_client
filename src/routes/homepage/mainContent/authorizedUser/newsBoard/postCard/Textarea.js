@@ -12,7 +12,7 @@ function Textarea({post, mode, className, children}) {
   useEffect(() => {
     setHeight(null);
     setValue(post.content.text);
-  }, [post._id])
+  }, [post._id, mode])
   
   useEffect(() => {
     const textarea = document.getElementsByClassName(`${className}`);

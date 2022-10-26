@@ -11,7 +11,7 @@ function PhotoComponent({post, mode}) {
 
   useEffect(() => {
     setPhoto(post.content.photo)
-  }, [post._id])
+  }, [post._id, mode])
 
   const base64String = postPhoto ? Buffer.from(postPhoto.bufferObject.data).toString('base64') : null;
   

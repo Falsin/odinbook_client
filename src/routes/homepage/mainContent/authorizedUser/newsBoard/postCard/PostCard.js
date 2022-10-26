@@ -58,7 +58,6 @@ const Post = ({post, className, children, settingFunction}) => {
         <label>{post.date}</label>
         {!post.content.text ? null : <StyledTextarea post={post} mode={isEditMode} />}
         <PhotoComponent post={post} mode={isEditMode} />
-        {/* <PhotoComponent photo={post.content.photo} mode={isEditMode} /> */}
         {!isEditMode ? <button onClick={changeMode}>Edit post</button> : <button>Save</button>}
         {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
       </form>
