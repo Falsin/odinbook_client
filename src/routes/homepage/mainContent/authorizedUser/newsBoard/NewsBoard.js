@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import StyledPost from "./postCard/PostCard";
-import uniqid from "uniqid";
 
 function NewsBoard({className, children, context}) {
   const [newsArray, setNewsArray] = useState([]);
-
-  console.log(newsArray)
 
   async function submit(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     e.target[0].value = "";
-
-    console.log(formData.get("photo"))
 
   const request = await fetch(process.env.SERVER_URL + 'post', {
       credentials: "include",
@@ -57,6 +52,7 @@ function NewsBoard({className, children, context}) {
 
       <ul>
         {newsArray.map((item, id) => {
+          console.log(item)
           return <StyledPost settingFunction={setNewsArray} key={id} post={item} />
         })}
       </ul>

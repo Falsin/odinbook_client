@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import StyledTextarea from "./Textarea";
 import PhotoComponent from "./PhotoComponent";
+import CommonContext from "../../../../../../commonContext";
 
 const Post = ({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
@@ -52,16 +53,28 @@ const Post = ({post, className, children, settingFunction}) => {
   }
 
   return (
-    <li className={className + (isEditMode ? " editMode" : "")} >
-      <form onSubmit={submit}>
-        <label>{post.author.username}</label>
-        <label>{post.date}</label>
-        {!post.content.text ? null : <StyledTextarea post={post} mode={isEditMode} />}
-        <PhotoComponent post={post} mode={isEditMode} />
-        {!isEditMode ? <button onClick={changeMode}>Edit post</button> : <button>Save</button>}
-        {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
-      </form>
-    </li>
+    <CommonContext.Consumer>
+      {(context) => {
+        return (
+          <li className={className + (isEditMode ? " editMode" : "")} >
+            <form onSubmit={submit}>
+              <label>{post.author.username}</label>
+              <label>{post.date}</label>
+              {!post.content.text ? null : <StyledTextarea post={post} mode={isEditMode} />}
+              <PhotoComponent post={post} mode={isEditMode} />
+              {!(context.commonInfo.credential._id === post.author._id) 
+                ? null 
+                : <>
+                    {!isEditMode ? <button onClick={changeMode}>Edit post</button> : <button>Save</button>}
+                    {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
+                  </>
+                }
+                <button>Comments {post.comments.length}</button>
+            </form>
+          </li>
+        )
+      }}
+    </CommonContext.Consumer>
   )
 }
 

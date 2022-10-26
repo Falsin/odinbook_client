@@ -11,14 +11,14 @@ function Textarea({post, mode, className, children}) {
 
   useEffect(() => {
     setHeight(null);
-    setValue(post.content.text);
+    setValue(post.content.text)
   }, [post._id, mode])
   
   useEffect(() => {
-    const textarea = document.getElementsByClassName(`${className}`);
+    const textarea = document.getElementsByClassName(`${className + " " + post._id}`);
   
     if (!height) {
-      setHeight(textarea.scrollHeight + "px");
+      setHeight(textarea[0].scrollHeight + "px");
     }
   })
 
@@ -27,7 +27,7 @@ function Textarea({post, mode, className, children}) {
   }
 
   return (
-    <textarea name="text" className={className} value={value} onChange={(e) => changeValue(e)} readOnly={mode ? false : true} style={{height: height}} />
+    <textarea name="text" className={className + " " + post._id} value={value} onChange={(e) => changeValue(e)} readOnly={mode ? false : true} style={{height: height}} />
   )
 }
 
