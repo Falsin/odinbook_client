@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Buffer } from 'buffer';
 import StyledTextarea from "./Textarea";
+import PhotoComponent from "./PhotoComponent";
 
 const Post = ({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
@@ -37,10 +37,6 @@ const Post = ({post, className, children, settingFunction}) => {
     const formData = new FormData(e.target);
     formData.append("id", post._id);
 
-    if (post.content.photo) {
-      formData.append("photo", JSON.stringify(post.content.photo));
-    }
-
     const request = await fetch(process.env.SERVER_URL + "post", {
       credentials: "include",
       method: "PUT",
@@ -55,8 +51,6 @@ const Post = ({post, className, children, settingFunction}) => {
     }
   }
 
-  const base64String = post.content.photo ? Buffer.from(post.content.photo.bufferObject.data).toString('base64') : null;
-
   return (
     <li className={className + (isEditMode ? " editMode" : "")} >
       <form onSubmit={submit}>
@@ -64,52 +58,11 @@ const Post = ({post, className, children, settingFunction}) => {
         <label>{post.date}</label>
         {!post.content.text ? null : <StyledTextarea post={post} mode={isEditMode} />}
         <PhotoComponent post={post} mode={isEditMode} />
+        {/* <PhotoComponent photo={post.content.photo} mode={isEditMode} /> */}
         {!isEditMode ? <button onClick={changeMode}>Edit post</button> : <button>Save</button>}
         {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
       </form>
     </li>
-  )
-}
-
-function PhotoComponent({post, mode, setPostPhoto}) {
-  const [photo, setPhoto] = useState(post.content.photo);
-
-  function deletePhoto(e) {
-    e.preventDefault()
-    post.content.photo = null;
-    console.log(post.content.photo)
-    setPhoto(post.content.photo);
-  }
-
-  const base64String = post.content.photo ? Buffer.from(post.content.photo.bufferObject.data).toString('base64') : null;
-  
-  return (
-    <>
-      {(() => {
-        if (mode) {
-          if (!photo) {
-            return <input name="photo" type="file" />
-          } else {
-            return (
-              <div>
-                {mode ? <button onClick={deletePhoto}>Delete photo</button> : null}
-                <img src={'data:' + post.content.photo.contentType + ";base64," + base64String}/>
-              </div>
-            )
-          }
-        } else {
-          if (photo) {
-            return (
-              <div>
-                <img src={'data:' + photo.contentType + ";base64," + base64String}/>
-              </div>
-            )
-          } else {
-            return null;
-          }
-        }
-      })()}
-    </>
   )
 }
 

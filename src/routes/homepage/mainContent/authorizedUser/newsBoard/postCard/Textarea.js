@@ -11,6 +11,7 @@ function Textarea({post, mode, className, children}) {
 
   useEffect(() => {
     setHeight(null);
+    setValue(post.content.text);
   }, [post._id])
   
   useEffect(() => {
@@ -19,15 +20,10 @@ function Textarea({post, mode, className, children}) {
     if (!height) {
       setHeight(textarea.scrollHeight + "px");
     }
-
-    if (value !== post.content.text && !mode) {
-      setValue(post.content.text)
-    }
   })
 
   function changeValue(e) {
     setValue(e.target.value);
-    
   }
 
   return (
