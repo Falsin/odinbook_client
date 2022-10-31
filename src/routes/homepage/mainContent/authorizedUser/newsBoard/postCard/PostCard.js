@@ -73,7 +73,9 @@ const Post = ({post, className, children, settingFunction}) => {
                     {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
                   </>
                 }
-                <button type="button" onClick={() => setCommentBlockStatus(!isCommentBlockActive)}>Comments {post.comments.length}</button>
+                <button type="button" onClick={() => setCommentBlockStatus(!isCommentBlockActive)}>
+                  {!isCommentBlockActive ? `Comments ${post.comments.length}` : `Close comments`}
+                  </button>
             </form>
             <CommentsBlock status={isCommentBlockActive} post={post} />
           </li>
