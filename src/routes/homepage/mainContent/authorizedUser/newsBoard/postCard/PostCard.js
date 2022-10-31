@@ -3,9 +3,11 @@ import styled from "styled-components";
 import StyledTextarea from "./Textarea";
 import PhotoComponent from "./PhotoComponent";
 import CommonContext from "../../../../../../commonContext";
+import CommentsBlock from "./CommentsComponent";
 
 const Post = ({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
+  const [isCommentBlockActive, setCommentBlockStatus] = useState(false);
 
   async function deletePost(e) {
     e.preventDefault();
@@ -52,6 +54,8 @@ const Post = ({post, className, children, settingFunction}) => {
     }
   }
 
+  console.log()
+
   return (
     <CommonContext.Consumer>
       {(context) => {
@@ -69,8 +73,9 @@ const Post = ({post, className, children, settingFunction}) => {
                     {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
                   </>
                 }
-                <button>Comments {post.comments.length}</button>
+                <button type="button" onClick={() => setCommentBlockStatus(!isCommentBlockActive)}>Comments {post.comments.length}</button>
             </form>
+            <CommentsBlock status={isCommentBlockActive} post={post} />
           </li>
         )
       }}
