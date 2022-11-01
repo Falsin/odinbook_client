@@ -7,6 +7,10 @@ function CommentsBlock ({status, post}) {
   const [commentsArray, setCommentsArray] = useState([]);
 
   useEffect(() => {
+    bindGetComments()
+  }, [post._id])
+
+  /* useEffect(() => {
     (async () => {
       const request = await fetch(process.env.SERVER_URL + `comments/${post._id}`, {
         credentials: "include",
@@ -14,11 +18,21 @@ function CommentsBlock ({status, post}) {
 
       const response = await request.json();
 
-      if (response.length) {
-        setCommentsArray(response);
-      }
+      setCommentsArray(response);
     })()
-  }, [])
+  }, [post._id]) */
+
+  async function getComments() {
+    const request = await fetch(process.env.SERVER_URL + `comments/${this._id}`, {
+      credentials: "include",
+    })
+
+    const response = await request.json();
+
+    setCommentsArray(response);
+  }
+
+  const bindGetComments = getComments.bind(post)
 
   console.log(commentsArray)
 
@@ -54,7 +68,7 @@ function CommentsBlock ({status, post}) {
         </form>
 
         <ul>
-          {commentsArray.map(item => <Comment key={item._id} comment={item} />)}
+          {commentsArray.map(item => <Comment getComments={bindGetComments} key={item._id} comment={item} />)}
 
         </ul>
       </div>
