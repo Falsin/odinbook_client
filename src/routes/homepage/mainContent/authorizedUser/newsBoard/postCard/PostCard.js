@@ -3,7 +3,7 @@ import styled from "styled-components";
 import StyledTextarea from "./Textarea";
 import PhotoComponent from "./PhotoComponent";
 import CommonContext from "../../../../../../commonContext";
-import CommentsBlock from "./CommentsComponent";
+import CommentsBlock from "./commentsBlock/CommentsBlock";
 
 const Post = ({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);

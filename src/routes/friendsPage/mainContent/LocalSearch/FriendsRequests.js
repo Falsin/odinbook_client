@@ -42,7 +42,6 @@ async function getFriendRequests (nameArray, setArrayRequests) {
 
   const response = await request.json();
 
-  console.log(response)
   if (response.length) {
     setArrayRequests(response);
   }

@@ -10,8 +10,12 @@ function NewsBoard({className, children, context}) {
 
     const formData = new FormData(e.target);
     e.target[0].value = "";
+    e.target[1].value = "";
 
-  const request = await fetch(process.env.SERVER_URL + 'post', {
+
+    console.dir(e.target)
+
+    const request = await fetch(process.env.SERVER_URL + 'post', {
       credentials: "include",
       method: "POST",
       body: formData
@@ -27,7 +31,7 @@ function NewsBoard({className, children, context}) {
   }
 
   useEffect(() => {
-    setNews()
+    setNews(context.commonInfo.credential)
   }, [])
 
   async function setNews() {
@@ -52,7 +56,6 @@ function NewsBoard({className, children, context}) {
 
       <ul>
         {newsArray.map((item, id) => {
-          console.log(item)
           return <StyledPost settingFunction={setNewsArray} key={id} post={item} />
         })}
       </ul>
