@@ -34,7 +34,7 @@ function CommentsBlock ({status, post}) {
 
   const bindGetComments = getComments.bind(post)
 
-  console.log(commentsArray)
+  //console.log(commentsArray)
 
   async function submit(e, context) {
     e.preventDefault();
@@ -68,8 +68,8 @@ function CommentsBlock ({status, post}) {
         </form>
 
         <ul>
-          {commentsArray.map(item => <Comment getComments={bindGetComments} key={item._id} comment={item} />)}
-
+          {/* {commentsArray.map((item, id) => <Comment getComments={bindGetComments} key={id} comment={item} />)} */}
+          {commentsArray.map((item, id) => <Comment getComments={bindGetComments} key={item._id} comment={item} />)}
         </ul>
       </div>
 }
