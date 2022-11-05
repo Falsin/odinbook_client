@@ -23,7 +23,7 @@ function CommentsBlock ({status, post}) {
   }, [post._id]) */
 
   async function getComments() {
-    const request = await fetch(process.env.SERVER_URL + `comments/${this._id}`, {
+    const request = await fetch(process.env.SERVER_URL + `post/${this._id}/comments`, {
       credentials: "include",
     })
 
@@ -69,7 +69,7 @@ function CommentsBlock ({status, post}) {
 
         <ul>
           {/* {commentsArray.map((item, id) => <Comment getComments={bindGetComments} key={id} comment={item} />)} */}
-          {commentsArray.map((item, id) => <Comment getComments={bindGetComments} key={item._id} comment={item} />)}
+          {commentsArray.map((item, id) => <Comment setCommentsArray={setCommentsArray} getComments={bindGetComments} key={item._id} comment={item} />)}
         </ul>
       </div>
 }

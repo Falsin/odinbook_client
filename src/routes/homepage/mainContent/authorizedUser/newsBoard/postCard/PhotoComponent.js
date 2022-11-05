@@ -4,11 +4,6 @@ import { Buffer } from 'buffer';
 function PhotoComponent({post, mode}) {
   const [postPhoto, setPhoto] = useState(post.content.photo);
 
-  function deletePhoto(e) {
-    e.preventDefault();
-    setPhoto(null);
-  }
-
   useEffect(() => {
     setPhoto(post.content.photo)
   }, [post._id, mode])
@@ -22,7 +17,7 @@ function PhotoComponent({post, mode}) {
           return !postPhoto 
             ? <input name="photo" type="file" />
             :  <div>
-                {mode ? <button onClick={deletePhoto}>Delete photo</button> : null}
+                {mode ? <button type="buttom" onClick={() => setPhoto(null)}>Delete photo</button> : null}
                 <img src={'data:' + postPhoto.contentType + ";base64," + base64String}/>
               </div>
         } else {
