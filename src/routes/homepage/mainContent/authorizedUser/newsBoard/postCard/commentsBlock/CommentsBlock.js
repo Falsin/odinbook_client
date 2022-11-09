@@ -1,29 +1,15 @@
 import React, { useEffect, useState } from "react";
-import CommonContext from "../../../../../../../commonContext";
 import Comment from "./CommentComponent";
-
 
 function CommentsBlock ({status, post}) {
   const [commentsArray, setCommentsArray] = useState([]);
 
   useEffect(() => {
-    bindGetComments()
+    getComments()
   }, [post._id])
 
-  /* useEffect(() => {
-    (async () => {
-      const request = await fetch(process.env.SERVER_URL + `comments/${post._id}`, {
-        credentials: "include",
-      })
-
-      const response = await request.json();
-
-      setCommentsArray(response);
-    })()
-  }, [post._id]) */
-
   async function getComments() {
-    const request = await fetch(process.env.SERVER_URL + `post/${this._id}/comments`, {
+    const request = await fetch(process.env.SERVER_URL + `post/${post._id}/comments`, {
       credentials: "include",
     })
 
@@ -31,10 +17,6 @@ function CommentsBlock ({status, post}) {
 
     setCommentsArray(response);
   }
-
-  const bindGetComments = getComments.bind(post)
-
-  //console.log(commentsArray)
 
   async function submit(e, context) {
     e.preventDefault();
@@ -54,7 +36,7 @@ function CommentsBlock ({status, post}) {
     const response = await request.json();
 
     if (response) {
-      setCommentsArray([response, ...commentsArray])
+      setCommentsArray(response)
     }
   }
 
@@ -68,8 +50,7 @@ function CommentsBlock ({status, post}) {
         </form>
 
         <ul>
-          {/* {commentsArray.map((item, id) => <Comment getComments={bindGetComments} key={id} comment={item} />)} */}
-          {commentsArray.map((item, id) => <Comment setCommentsArray={setCommentsArray} getComments={bindGetComments} key={item._id} comment={item} />)}
+          {commentsArray.map((item, id) => <Comment setCommentsArray={setCommentsArray} key={item._id} comment={item} />)}
         </ul>
       </div>
 }

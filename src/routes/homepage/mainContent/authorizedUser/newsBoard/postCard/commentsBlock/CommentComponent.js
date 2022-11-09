@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 
-const Comment = React.memo(({comment, getComments, setCommentsArray}) => {
+const Comment = React.memo(({comment, setCommentsArray}) => {
   const [value, setValue] = useState(comment.content.text);
   const [isEditMode, setMode] = useState(false);
 
+  /* useEffect(() => {
+    setValue(value);
+  }, [comment.date]) */
+
   useEffect(() => {
     setValue(value);
-  }, [comment.date])
+  })
 
   async function submit(e) {
     e.preventDefault();
-    console.log('hello')
 
     const formData = new FormData(e.target);
     formData.set("commentId", comment._id);

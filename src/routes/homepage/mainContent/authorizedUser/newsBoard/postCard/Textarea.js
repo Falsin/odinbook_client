@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
 function Textarea({post, mode, className, children}) {
-  const [height, setHeight] = useState(null);
   const [value, setValue] = useState(post.content.text);
-  
-  useEffect(() => {
-    window.addEventListener('resize', () => setHeight(null));
-  }, [])
+  const textarea = useRef(null)
 
   useEffect(() => {
-    setHeight(null);
-    setValue(post.content.text)
-  }, [post._id, mode])
-  
-  useEffect(() => {
-    const textarea = document.getElementsByClassName(`${className + " " + post._id}`);
-  
-    if (!height) {
-      setHeight(textarea[0].scrollHeight + "px");
-    }
-  })
+    window.addEventListener('resize', () => settingHeight());
+
+    settingHeight()
+  }, [])
+
+  function settingHeight() {
+    textarea.current.style.height = "auto";
+
+    const scrollHeight = textarea.current.scrollHeight + "px";
+    textarea.current.style.height = scrollHeight;
+  }
 
   function changeValue(e) {
     setValue(e.target.value);
+    settingHeight()
   }
-
+  
   return (
-    <textarea name="text" className={className + " " + post._id} value={value} onChange={(e) => changeValue(e)} readOnly={mode ? false : true} style={{height: height}} />
+    <textarea 
+      name="text" 
+      className={className + " " + post._id} 
+      value={value} 
+      onChange={(e) => changeValue(e)}
+      readOnly={mode ? false : true} 
+      ref={textarea} 
+    />
   )
 }
 
