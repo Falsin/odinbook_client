@@ -8,6 +8,7 @@ import CommentsBlock from "./commentsBlock/CommentsBlock";
 const Post = React.memo(({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
   const [isCommentBlockActive, setCommentBlockStatus] = useState(false);
+  const [numberComments, setNumberComments] = useState(post.comments.length);
 
   async function deletePost(e) {
     e.preventDefault();
@@ -57,6 +58,7 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
   return (
     <CommonContext.Consumer>
       {(context) => {
+        console.log(post)
         return (
           <li className={className + (isEditMode ? " editMode" : "")} >
             <form onSubmit={submit}>
@@ -72,10 +74,10 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
                   </>
                 }
                 <button type="button" onClick={() => setCommentBlockStatus(!isCommentBlockActive)}>
-                  {!isCommentBlockActive ? `Comments ${post.comments.length}` : `Close comments`}
+                  {!isCommentBlockActive ? `Comments ${numberComments}` : `Close comments`}
                   </button>
             </form>
-            <CommentsBlock status={isCommentBlockActive} post={post} />
+            <CommentsBlock status={isCommentBlockActive} post={post} setNumberComments={setNumberComments}  />
           </li>
         )
       }}

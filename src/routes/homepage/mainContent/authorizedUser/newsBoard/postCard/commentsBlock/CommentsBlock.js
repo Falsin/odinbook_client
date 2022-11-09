@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Comment from "./CommentComponent";
 
-function CommentsBlock ({status, post}) {
+function CommentsBlock ({status, post, setNumberComments}) {
   const [commentsArray, setCommentsArray] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,8 @@ function CommentsBlock ({status, post}) {
     const response = await request.json();
 
     if (response) {
-      setCommentsArray(response)
+      setCommentsArray(response);
+      setNumberComments(response.length)
     }
   }
 
