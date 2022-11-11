@@ -5,10 +5,6 @@ const Comment = React.memo(({comment, setCommentsArray}) => {
   const [value, setValue] = useState(comment.content.text);
   const [isEditMode, setMode] = useState(false);
 
-  /* useEffect(() => {
-    setValue(value);
-  }, [comment.date]) */
-
   useEffect(() => {
     setValue(value);
   })
@@ -51,6 +47,12 @@ const Comment = React.memo(({comment, setCommentsArray}) => {
       method: "DELETE",
       body: JSON.stringify({commentId: comment._id})
     })
+
+    const response = await request.json();
+
+    if (response) {
+      setCommentsArray(response);
+    }
   }
 
   function changeComment(e) {
