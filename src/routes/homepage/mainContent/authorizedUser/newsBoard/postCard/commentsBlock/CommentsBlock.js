@@ -18,7 +18,7 @@ function CommentsBlock ({status, post, setNumberComments}) {
     setCommentsArray(response);
   }
 
-  async function submit(e, context) {
+  async function submit(e) {
     e.preventDefault();
 
     let form = new FormData(e.target);

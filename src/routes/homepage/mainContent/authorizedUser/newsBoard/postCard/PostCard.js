@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import PhotoComponent from "./PhotoComponent";
 import CommonContext from "../../../../../../commonContext";
 import CommentsBlock from "./commentsBlock/CommentsBlock";
 import { StyledTextareaForPost } from "../../../../../../commonComponents/Textarea";
+import PhotoComponent from "../../../../../../commonComponents/PhotoComponent";
 
 const Post = React.memo(({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
@@ -64,7 +64,9 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
               <label>{post.author.username}</label>
               <label>{post.date}</label>
               {!post.content.text ? null : <StyledTextareaForPost contentBlock={post} mode={isEditMode} />}
-              <PhotoComponent post={post} mode={isEditMode} />
+              <PhotoComponent photoBlock={post.content.photo} mode={isEditMode} />
+              
+              {/* <CommentPhoto photo={post.content.photo} mode={isEditMode} /> */}
               {!(context.commonInfo.credential._id === post.author._id) 
                 ? null 
                 : <>

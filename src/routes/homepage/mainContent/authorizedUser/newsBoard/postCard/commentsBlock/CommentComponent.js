@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 import { StyledTextareaForComment } from "../../../../../../../commonComponents/Textarea";
+import PhotoComponent from "../../../../../../../commonComponents/PhotoComponent";
 
 const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
   const [value, setValue] = useState(comment.content.text);
@@ -70,8 +71,7 @@ const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
         <label>{comment.author.username}</label>
         <label>{comment.data}</label>
         {!comment.content.text ? null : <StyledTextareaForComment contentBlock={comment} mode={isEditMode} />}
-
-        <CommentPhoto photo={comment.content.photo} mode={isEditMode} />
+        <PhotoComponent photoBlock={comment.content.photo} mode={isEditMode} />
 
         {!isEditMode ? <button onClick={changeComment}>change comment</button> : <button>Save</button>}
         {!isEditMode ? <button onClick={deleteComment}>delete comment</button> : <button onClick={cancelChange}>Cancel</button>}
@@ -80,34 +80,5 @@ const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
     </li>
   )
 }, (prevProps, nextProps) => prevProps.comment.date === nextProps.comment.date)
-
-function CommentPhoto({photo, mode}) {
-  const [photoComponent, setPhoto] = useState(photo);
-
-  const base64String = photoComponent ? Buffer.from(photoComponent.bufferObject.data).toString('base64') : null;
-
-  useEffect(() => {
-    setPhoto(photo)
-  }, [mode])
-  
-  return (
-    (() => {
-      if (mode) {
-        return !photoComponent 
-          ? <input type="file" name="photo" />
-          : <div>
-              <button onClick={() => setPhoto(null)}>Delete photo</button>
-              <img src={'data:' + photoComponent.contentType + ';base64,' + base64String} />
-            </div>
-      } else {
-        return !photoComponent 
-          ? null 
-          : <div>
-              <img src={'data:' + photoComponent.contentType + ';base64,' + base64String} />
-            </div>
-      }
-    })()
-  )
-}
 
 export default Comment;
