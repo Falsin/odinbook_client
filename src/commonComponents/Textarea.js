@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
-function Textarea({post, mode, className, children}) {
-  const [value, setValue] = useState(post.content.text);
+function Textarea({contentBlock, mode, className, children}) {
+  const [value, setValue] = useState(contentBlock.content.text);
   const textarea = useRef(null)
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function Textarea({post, mode, className, children}) {
   return (
     <textarea 
       name="text" 
-      className={className + " " + post._id} 
+      className={className + " " + contentBlock._id} 
       value={value} 
       onChange={(e) => changeValue(e)}
       readOnly={mode ? false : true} 
@@ -35,7 +35,7 @@ function Textarea({post, mode, className, children}) {
   )
 }
 
-const StyledTextarea = styled(Textarea)`
+export const StyledTextareaForPost = styled(Textarea)`
     background: none;
     color: white;
     border: none;
@@ -45,4 +45,12 @@ const StyledTextarea = styled(Textarea)`
     box-sizing: border-box;
 `
 
-export default StyledTextarea;
+export const StyledTextareaForComment = styled(Textarea)`
+    background: none;
+    color: white;
+    border: none;
+    outline: none;
+    display: inline-block;
+    overflow: hidden;
+    box-sizing: border-box;
+`

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Buffer } from "buffer";
+import { StyledTextareaForComment } from "../../../../../../../commonComponents/Textarea";
 
 const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
   const [value, setValue] = useState(comment.content.text);
@@ -68,7 +69,7 @@ const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
       <form onSubmit={submit}>
         <label>{comment.author.username}</label>
         <label>{comment.data}</label>
-        <textarea name="text" value={value} onChange={(e) => setValue(e.target.value)} readOnly={!isEditMode ? true : false} />
+        {!comment.content.text ? null : <StyledTextareaForComment contentBlock={comment} mode={isEditMode} />}
 
         <CommentPhoto photo={comment.content.photo} mode={isEditMode} />
 

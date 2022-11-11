@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import StyledTextarea from "./Textarea";
 import PhotoComponent from "./PhotoComponent";
 import CommonContext from "../../../../../../commonContext";
 import CommentsBlock from "./commentsBlock/CommentsBlock";
+import { StyledTextareaForPost } from "../../../../../../commonComponents/Textarea";
 
 const Post = React.memo(({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
@@ -63,7 +63,7 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
             <form onSubmit={submit}>
               <label>{post.author.username}</label>
               <label>{post.date}</label>
-              {!post.content.text ? null : <StyledTextarea post={post} mode={isEditMode} />}
+              {!post.content.text ? null : <StyledTextareaForPost contentBlock={post} mode={isEditMode} />}
               <PhotoComponent post={post} mode={isEditMode} />
               {!(context.commonInfo.credential._id === post.author._id) 
                 ? null 
