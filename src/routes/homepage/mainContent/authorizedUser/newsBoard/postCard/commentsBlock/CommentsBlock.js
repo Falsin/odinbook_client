@@ -51,7 +51,14 @@ function CommentsBlock ({status, post, setNumberComments}) {
         </form>
 
         <ul>
-          {commentsArray.map(item => <Comment setCommentsArray={setCommentsArray} key={item._id} comment={item} />)}
+          {commentsArray.map(item => {
+            return <Comment 
+              setCommentsArray={setCommentsArray} 
+              key={item._id} 
+              comment={item}
+              setNumberComments={setNumberComments} 
+            />
+          })}
         </ul>
       </div>
 }

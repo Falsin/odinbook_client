@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 
-const Comment = React.memo(({comment, setCommentsArray}) => {
+const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
   const [value, setValue] = useState(comment.content.text);
   const [isEditMode, setMode] = useState(false);
 
@@ -41,17 +41,20 @@ const Comment = React.memo(({comment, setCommentsArray}) => {
 
   async function deleteComment(e) {
     e.preventDefault();
-
     const request = await fetch(process.env.SERVER_URL + "comment", {
       credentials: "include",
       method: "DELETE",
-      body: JSON.stringify({commentId: comment._id})
+      body: JSON.stringify({commentId: comment._id}),
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
 
     const response = await request.json();
 
     if (response) {
       setCommentsArray(response);
+      setNumberComments(response.length);
     }
   }
 
