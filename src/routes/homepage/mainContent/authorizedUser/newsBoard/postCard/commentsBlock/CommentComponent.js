@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 import { StyledTextareaForComment } from "../../../../../../../commonComponents/Textarea";
 import PhotoComponent from "../../../../../../../commonComponents/PhotoComponent";
+import CommonContext from "../../../../../../../commonContext";
 
-const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
+const Comment = React.memo(({comment, setCommentsArray}) => {
   const [value, setValue] = useState(comment.content.text);
   const [isEditMode, setMode] = useState(false);
+  const [commentObject, setCommentObject] = useState(comment);
 
   useEffect(() => {
-    setValue(value);
-  })
+    setCommentObject(comment)
+  }, [comment.date])
 
   async function submit(e) {
     e.preventDefault();
@@ -30,7 +32,7 @@ const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
     })
 
     const response = await request.json();
-    setCommentsArray(response);
+    setCommentObject(response)
     setMode(!isEditMode);
   }
 
@@ -56,7 +58,6 @@ const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
 
     if (response) {
       setCommentsArray(response);
-      setNumberComments(response.length);
     }
   }
 
@@ -65,19 +66,54 @@ const Comment = React.memo(({comment, setCommentsArray, setNumberComments}) => {
     setMode(!isEditMode)
   }
 
+  async function addOrDeleteCommentInLikes(e, context) {
+    e.preventDefault();
+    let response;
+
+    if (!commentObject.likes.includes(context.commonInfo.credential._id)) {
+      response = await getRequest("PUT");
+    } else {
+      response = await getRequest("DELETE");
+    }
+
+    if (response) {
+      setCommentObject(response);
+    }
+  }
+
+  async function getRequest(method) {
+    const request = await fetch(process.env.SERVER_URL + `comment/${comment._id}/like`, {
+      credentials: "include",
+      method: method,
+    });
+    return request.json();
+  }
+
+  console.log(commentObject)
+
   return (
-    <li>
-      <form onSubmit={submit}>
-        <label>{comment.author.username}</label>
-        <label>{comment.data}</label>
-        {!comment.content.text ? null : <StyledTextareaForComment contentBlock={comment} mode={isEditMode} />}
-        <PhotoComponent photoBlock={comment.content.photo} mode={isEditMode} />
+    <CommonContext.Consumer>
+      {(context) => {
+        return (
+          <li>
+            <form onSubmit={submit}>
+              <label>{commentObject.author.username}</label>
+              <label>{commentObject.data}</label>
+              {!commentObject.content.text ? null : <StyledTextareaForComment contentBlock={commentObject} mode={isEditMode} />}
+              <PhotoComponent photoBlock={commentObject.content.photo} mode={isEditMode} />
 
-        {!isEditMode ? <button onClick={changeComment}>change comment</button> : <button>Save</button>}
-        {!isEditMode ? <button onClick={deleteComment}>delete comment</button> : <button onClick={cancelChange}>Cancel</button>}
+              <button onClick={(e) => addOrDeleteCommentInLikes(e, context)}>Likes {commentObject.likes.length}</button>
+              <div>
+                {!isEditMode ? <button onClick={changeComment}>change comment</button> : <button>Save</button>}
+                {!isEditMode ? <button onClick={deleteComment}>delete comment</button> : <button onClick={cancelChange}>Cancel</button>}
+              </div>
 
-      </form>
-    </li>
+            </form>
+          </li>
+        )
+      }}
+    </CommonContext.Consumer>
+
   )
 }, (prevProps, nextProps) => prevProps.comment.date === nextProps.comment.date)
 

@@ -8,7 +8,7 @@ import PhotoComponent from "../../../../../../commonComponents/PhotoComponent";
 const Post = React.memo(({post, className, children, settingFunction}) => {
   const [isEditMode, setMode] = useState(false);
   const [isCommentBlockActive, setCommentBlockStatus] = useState(false);
-  const [numberComments, setNumberComments] = useState(post.comments.length);
+  const [postObject, setPostObject] = useState(post);
 
   async function deletePost(e) {
     e.preventDefault();
@@ -16,7 +16,7 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
     const request = await fetch(process.env.SERVER_URL + "post", {
       credentials: "include",
       method: "DELETE",
-      body: JSON.stringify({_id: post._id}),
+      body: JSON.stringify({_id: postObject._id}),
       headers: {
         "Content-Type": "application/json"
       }
@@ -39,7 +39,7 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    formData.append("id", post._id);
+    formData.append("id", postObject._id);
 
     const request = await fetch(process.env.SERVER_URL + "post", {
       credentials: "include",
@@ -55,30 +55,58 @@ const Post = React.memo(({post, className, children, settingFunction}) => {
     }
   }
 
+  async function addOrDeletePostInLikes(e, context) {
+    e.preventDefault();
+    let response;
+
+    if (!postObject.likes.includes(context.commonInfo.credential._id)) {
+      response = await getRequest("PUT")
+    } else {
+      response = await getRequest("DELETE")
+    }
+
+    if (response) {
+      setPostObject({
+        ...postObject,
+        likes: response
+      })
+    }
+  }
+
+  async function getRequest(method) {
+    const request = await fetch(process.env.SERVER_URL + `post/${post._id}/like`, {
+      credentials: "include",
+      method: method,
+    });
+    return request.json();
+  }
+
   return (
     <CommonContext.Consumer>
       {(context) => {
         return (
           <li className={className + (isEditMode ? " editMode" : "")} >
             <form onSubmit={submit}>
-              <label>{post.author.username}</label>
-              <label>{post.date}</label>
-              {!post.content.text ? null : <StyledTextareaForPost contentBlock={post} mode={isEditMode} />}
-              <PhotoComponent photoBlock={post.content.photo} mode={isEditMode} />
-              
-              {/* <CommentPhoto photo={post.content.photo} mode={isEditMode} /> */}
-              {!(context.commonInfo.credential._id === post.author._id) 
-                ? null 
-                : <>
-                    {!isEditMode ? <button onClick={changeMode}>Edit post</button> : <button>Save</button>}
-                    {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
-                  </>
+              <label>{postObject.author.username}</label>
+              <label>{postObject.date}</label>
+              {!postObject.content.text ? null : <StyledTextareaForPost contentBlock={postObject} mode={isEditMode} />}
+              <PhotoComponent photoBlock={postObject.content.photo} mode={isEditMode} />
+              <button onClick={(e) => addOrDeletePostInLikes(e, context)}>Likes {postObject.likes.length}</button>
+              <div>
+                {!(context.commonInfo.credential._id === postObject.author._id) 
+                  ? null 
+                  : <>
+                      {!isEditMode ? <button onClick={changeMode}>Edit post</button> : <button>Save</button>}
+                      {!isEditMode ? <button onClick={deletePost}>Delete post</button> : <button onClick={changeMode}>Cancel</button>}
+                    </>
                 }
                 <button type="button" onClick={() => setCommentBlockStatus(!isCommentBlockActive)}>
-                  {!isCommentBlockActive ? `Comments ${numberComments}` : `Close comments`}
-                  </button>
+                  {!isCommentBlockActive ? `Comments ${postObject.comments.length}` : `Close comments`}
+                </button>
+              </div>
+          
             </form>
-            <CommentsBlock status={isCommentBlockActive} post={post} setNumberComments={setNumberComments}  />
+            <CommentsBlock status={isCommentBlockActive} post={postObject} setPost={setPostObject}  />
           </li>
         )
       }}

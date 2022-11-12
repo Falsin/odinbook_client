@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Comment from "./CommentComponent";
 
-function CommentsBlock ({status, post, setNumberComments}) {
+function CommentsBlock ({status, post, setPost}) {
   const [commentsArray, setCommentsArray] = useState([]);
 
   useEffect(() => {
     getComments()
-  }, [post._id])
+  }, [post._id]);
+
+  useEffect(() => {
+    setPost({
+      ...post,
+      comments: commentsArray.map(item => item._id),
+    })
+  }, [commentsArray.length])
 
   async function getComments() {
     const request = await fetch(process.env.SERVER_URL + `post/${post._id}/comments`, {
@@ -37,7 +44,6 @@ function CommentsBlock ({status, post, setNumberComments}) {
 
     if (response) {
       setCommentsArray(response);
-      setNumberComments(response.length)
     }
   }
 
@@ -56,7 +62,6 @@ function CommentsBlock ({status, post, setNumberComments}) {
               setCommentsArray={setCommentsArray} 
               key={item._id} 
               comment={item}
-              setNumberComments={setNumberComments} 
             />
           })}
         </ul>
