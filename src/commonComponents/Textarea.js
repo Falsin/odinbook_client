@@ -11,6 +11,10 @@ function Textarea({contentBlock, mode, className, children}) {
     settingHeight()
   }, [])
 
+  useEffect(() => {
+    setValue(contentBlock.content.text);
+  }, [mode])
+
   function settingHeight() {
     textarea.current.style.height = "auto";
 

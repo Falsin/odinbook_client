@@ -57,6 +57,28 @@ function AuthForm({className, children, changeMode}) {
     return request.json();
   }
 
+  async function testLogin(e, context) {
+    e.preventDefault();
+
+    const request = await fetch(process.env.SERVER_URL + "login", {
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify({
+        username: "test1",
+        password: 123
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+
+    const response = await request.json();
+
+    context.setCommonInfo({
+      credential: response
+    })
+  }
+
   return (
     <CommonContext.Consumer>
       {context => {
@@ -72,7 +94,7 @@ function AuthForm({className, children, changeMode}) {
 
             <button>Log in</button>
             <button type="button" onClick={() => changeMode(true)}>Create new account</button>
-            <button type="button">Test drive an existing account</button>
+            <button type="button" onClick={(e) => testLogin(e, context)}>Test drive an existing account</button>
             <a href={process.env.SERVER_URL + "login/facebook"}>Log in with Facebook</a>
           </form>
         )

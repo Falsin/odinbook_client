@@ -5,7 +5,6 @@ import PhotoComponent from "../../../../../../../commonComponents/PhotoComponent
 import CommonContext from "../../../../../../../commonContext";
 
 const Comment = React.memo(({comment, setCommentsArray}) => {
-  const [value, setValue] = useState(comment.content.text);
   const [isEditMode, setMode] = useState(false);
   const [commentObject, setCommentObject] = useState(comment);
 
@@ -40,7 +39,6 @@ const Comment = React.memo(({comment, setCommentsArray}) => {
     e.preventDefault();
 
     setMode(!isEditMode);
-    setValue(comment.content.text);
   }
 
   async function deleteComment(e) {
@@ -89,8 +87,6 @@ const Comment = React.memo(({comment, setCommentsArray}) => {
     return request.json();
   }
 
-  console.log(commentObject)
-
   return (
     <CommonContext.Consumer>
       {(context) => {
@@ -103,11 +99,13 @@ const Comment = React.memo(({comment, setCommentsArray}) => {
               <PhotoComponent photoBlock={commentObject.content.photo} mode={isEditMode} />
 
               <button onClick={(e) => addOrDeleteCommentInLikes(e, context)}>Likes {commentObject.likes.length}</button>
-              <div>
-                {!isEditMode ? <button onClick={changeComment}>change comment</button> : <button>Save</button>}
-                {!isEditMode ? <button onClick={deleteComment}>delete comment</button> : <button onClick={cancelChange}>Cancel</button>}
-              </div>
-
+              {!(context.commonInfo.credential._id === commentObject.author._id) 
+                ? null
+                : <div>
+                  {!isEditMode ? <button onClick={changeComment}>change comment</button> : <button>Save</button>}
+                  {!isEditMode ? <button onClick={deleteComment}>delete comment</button> : <button onClick={cancelChange}>Cancel</button>}
+                </div>
+              }
             </form>
           </li>
         )
